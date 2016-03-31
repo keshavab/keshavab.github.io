@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Abouts on keshavab.io</title>
+    <link>http://keshavab.github.io/about/</link>
+    <description>Recent content in Abouts on keshavab.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 01 Jan 1970 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://keshavab.github.io/about/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>About</title>
+      <link>http://keshavab.github.io/about/</link>
+      <pubDate>Thu, 01 Jan 1970 00:00:00 +0000</pubDate>
+      
+      <guid>http://keshavab.github.io/about/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;http://keshavab.github.io/assets/keshava_scuba_diving.jpg&#34; alt=&#34;me scuba diving&#34; /&gt;
+I am an engineer working with &lt;a href=&#34;http://www.cisco.com/&#34;&gt;cisco&lt;/a&gt; in cloud security team. I work on &lt;a href=&#34;https://github.com/CiscoCloud/microservices-infrastructure&#34;&gt;micro services infrastructure&lt;/a&gt;
+and lot other stuff which help in running cisco security applications. Prior to this, i&amp;rsquo;ve worked on &lt;a href=&#34;https://www.openstack.org/&#34;&gt;OpenStack&lt;/a&gt;, specifically
+&lt;a href=&#34;http://docs.openstack.org/developer/swift/&#34;&gt;OpenStack Swift&lt;/a&gt; and on other various IAAS products like &lt;a href=&#34;http://www8.hp.com/in/en/business-solutions/solution.html?compURI=1246501#.Vc-AHROqqkp&#34;&gt;HP Cloud System Matrix&lt;/a&gt;. Avid &lt;a href=&#34;https://www.python.org/&#34;&gt;python&lt;/a&gt; and &lt;a href=&#34;https://golang.org/&#34;&gt;golang&lt;/a&gt; enthusiast. Supports &lt;a href=&#34;http://www.fcbarcelona.com/&#34;&gt;FCBarcelona&lt;/a&gt;. Idolizes &lt;a href=&#34;https://en.wikipedia.org/wiki/Lionel_Messi&#34;&gt;Messi&lt;/a&gt;.
+&lt;a href=&#34;https://en.wikipedia.org/wiki/Zen&#34;&gt;Zen&lt;/a&gt; enthusiast.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;* All the opinions in this blog are mine and not that of my employer.&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

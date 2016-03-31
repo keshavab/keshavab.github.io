@@ -1,0 +1,185 @@
+    <!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Keshava Bharadwaj">
+		<meta name="description" content="Home of Keshava Bharadwaj">
+		<meta name="generator" content="Hugo 0.15" />
+		<title>TP-Link MR3020 and ZTE MF 825A - Making it work &middot; keshavab.io</title>
+		<link rel="shortcut icon" href="http://keshavab.github.io/images/favicon.ico">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/style.css">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/github.css">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/monosocialiconsfont.css">
+		
+		<link href="http://keshavab.github.io/index.xml" rel="alternate" type="application/rss+xml" title="keshavab.io" />
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+  
+    <a href='http://keshavab.github.io/'> Home</a>
+
+    <a href='http://keshavab.github.io/about'>About</a>
+
+    <a href="http://keshavab.github.io/index.xml">Subscribe</a>
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>TP-Link MR3020 and ZTE MF 825A - Making it work</h1>
+                    <h2 class="headline">March 7, 2014</h2>
+                </header>
+                <section id="post-body">
+                    <p>You have got ZTE MF 825A ( 4G dongle, typically in india with airtel)
+and have bought TP-Link MR3020 to enjoy 4g speed over wifi. and oops.. they are not working out of the box. You are not alone. There are lotsa people including me facing same problem. Below are things you can do to make them work.</p>
+
+<p>Problem:
+March 07 2014.
+As on this date, TP-Link MR3020 ships by default with firmware revision with 9/29/2013. On connecting ZTE MF 825A with this, it did not work. i.e modem status says identified. but connection to 4g network never succeeds. Hence out of the Box, MF825A doesnot work.
+The latest version on website is the same version - 9/29/2013. That doesnot serve no good.</p>
+
+<p>Solution:
+In comes the saviour - <a href="http://en.wikipedia.org/wiki/OpenWrt">Openwrt</a>.
+OpenWrt is described as a Linux distribution for embedded devices.</p>
+
+<ol>
+<li>Browse to <a href="http://ofmodemsandmen.com/downloads.html">http://ofmodemsandmen.com/downloads.html</a>. This provides firmware out of box based on openwrt.</li>
+<li>Choose the huntsman version for 3020 which is the stable version. download this firmware bin file.</li>
+<li>login to router admin url. 192.168.0.254.  click on firmware section. click on upgrade.</li>
+<li>choose the bin file downloaded earlier and click on upgrade.</li>
+<li>once upgrade is clicked, the router applies the above firmware and reboots. on reboot you would be welcomed with a new screen which are screens of openwrt and not of tplink. This may void the warranty and do it at your own risk.</li>
+<li>Now login to same admin url. - 192.168.0.254 or 192.168.1.1 now click on modem-&gt;connection section.</li>
+<li>Enter these values -
+APN: airtelgprs.com
+pin: *99#</li>
+</ol>
+
+<p>Reboot the router and start enjoying high speed 4g over wireless.
+Enjoy !!!!</p>
+
+<p>P.S: Read the instructions once on openwrt before flashing the firmware.</p>
+
+                </section>
+            </article>
+            <footer id="post-meta" class="clearfix">
+                <a href="https://twitter.com/keshavab">
+                        <img class="avatar" src="http://keshavab.github.io/images/avatar.png">
+                        <div>
+                            
+                            <span></span>
+                        </div>
+                    </a>
+                <section id="sharing">
+                    
+<a class="twitter" href="https://twitter.com/intent/tweet?text=TP-Link%20MR3020%20and%20ZTE%20MF%20825A%20-%20Making%20it%20work - http%3a%2f%2fkeshavab.github.io%2f2014%2f03%2f07%2ftplink_3020_mf825a by @keshavab"><span class="icon-twitter"> Tweet</span></a>
+
+
+
+
+                </section>
+            </footer>
+
+            <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'keshavabharadwaj';
+    var disqus_identifier = 'http:\/\/keshavab.github.io\/2014\/03\/07\/tplink_3020_mf825a';
+    var disqus_title = 'TP-Link MR3020 and ZTE MF 825A - Making it work';
+    var disqus_url = 'http:\/\/keshavab.github.io\/2014\/03\/07\/tplink_3020_mf825a';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+            <ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+    
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/03/31/closure_golang">Closures in golang<aside class="dates">Mar 31</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/03/15/hugo_theme_not_rendered">Hugo theme not rendered correctly<aside class="dates">Mar 15</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/02/29/s3-compatible-storage-systems">S3 compatible storage systems<aside class="dates">Feb 29</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2015/09/01/container_ecosystem">Container ecosystem - applications, tools and technologies.<aside class="dates">Sep 1</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2015/08/21/ansible_include_with_items">Ansible - include &#43; with_items back in 2.0<aside class="dates">Aug 21</aside></a>
+        </li>
+        
+   
+</ul>
+
+            <footer id="footer">
+    
+        
+<div id="social">
+    
+    <a class="symbol" href="http://www.github.com/keshavab">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="http://www.twitter.com/keshavab">
+        circletwitterbird
+    </a>
+    
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2016 Keshava Bharadwaj
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://keshavab.github.io/js/main.js"></script>
+<script src="http://keshavab.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-66360859-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+    </body>
+</html>

@@ -1,0 +1,225 @@
+    <!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Keshava Bharadwaj">
+		<meta name="description" content="Home of Keshava Bharadwaj">
+		<meta name="generator" content="Hugo 0.15" />
+		<title>Ring, What’s your balance ? &middot; keshavab.io</title>
+		<link rel="shortcut icon" href="http://keshavab.github.io/images/favicon.ico">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/style.css">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/github.css">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/monosocialiconsfont.css">
+		
+		<link href="http://keshavab.github.io/index.xml" rel="alternate" type="application/rss+xml" title="keshavab.io" />
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+  
+    <a href='http://keshavab.github.io/'> Home</a>
+
+    <a href='http://keshavab.github.io/about'>About</a>
+
+    <a href="http://keshavab.github.io/index.xml">Subscribe</a>
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>Ring, What’s your balance ?</h1>
+                    <h2 class="headline">August 31, 2014</h2>
+                </header>
+                <section id="post-body">
+                    <p><img src="/assets/balance.jpg" alt="balance" /></p>
+
+<p>In Swift, the Ring is one of the most important structure and file. It defines where the data will be stored in the cluster. It defines whole of your swift cluster. There are many properties of a ring and one such is balance.</p>
+
+<p>So, whats the balance of a ring ?
+From the source
+&gt; &ldquo;The balance value is the highest percentage off the desired amount of partitions a given device
+wants. For instance, if the “worst” device wants (based on its weight relative to the sum of all the devices’ weights) 123 partitions and it has 124 partitions, the balance value would be 0.83 (1 extra / 123 wanted * 100 for percentage).&rdquo;</p>
+
+<p>So, balance is the <strong>maximum percentage deviation</strong> from the desired number of partitions a device wants.</p>
+
+<p>Lets consider an example swift cluster with 3 nodes and 10 disks on each node with equal weight, with partition power of 10 and 3 replicas.</p>
+
+<p>The total number of partitions = 2^10 * 3 = 3072 partitions.</p>
+
+<p>ideally, these 3072 partitions should be equally distributed across 30 nodes which would be <sup>3072</sup>&frasl;<sub>30</sub> =  102.4
+So, the desired partition each device wants is <strong>102.4</strong>.</p>
+
+<p>Now, lets inspect the object ring using swift-ring-builder.</p>
+
+<p>Lets examine an example ring. To create and view contents of a ring, swift-ring-builder command is used.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>swift-ring-builder object.builder
+object.builder, build version 30
+<span class="m">1024</span> partitions, 3.000000 replicas, <span class="m">1</span> regions, <span class="m">1</span> zones, <span class="m">30</span> devices, 0.59 balance
+The minimum number of hours before a partition can be reassigned is 1
+Devices:    id  region  zone      ip address  port  replication ip  replication port      name weight partitions balance meta
+             <span class="m">0</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.1  <span class="m">6000</span>        10.0.0.1              <span class="m">6000</span>      sdb1 100.00        <span class="m">102</span>   -0.39
+             <span class="m">1</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.1  <span class="m">6000</span>        10.0.0.1              <span class="m">6000</span>      sdb2 100.00        <span class="m">103</span>    0.59
+             <span class="m">2</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.1  <span class="m">6000</span>        10.0.0.1              <span class="m">6000</span>      sdb3 100.00        <span class="m">102</span>   -0.39
+             <span class="m">3</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.1  <span class="m">6000</span>        10.0.0.1              <span class="m">6000</span>      sdb4 100.00        <span class="m">102</span>   -0.39
+             <span class="m">4</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.1  <span class="m">6000</span>        10.0.0.1              <span class="m">6000</span>      sdb5 100.00        <span class="m">102</span>   -0.39
+             <span class="m">5</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.1  <span class="m">6000</span>        10.0.0.1              <span class="m">6000</span>      sdb6 100.00        <span class="m">103</span>    0.59
+             <span class="m">6</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.1  <span class="m">6000</span>        10.0.0.1              <span class="m">6000</span>      sdb7 100.00        <span class="m">103</span>    0.59
+             <span class="m">7</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.1  <span class="m">6000</span>        10.0.0.1              <span class="m">6000</span>      sdb8 100.00        <span class="m">103</span>    0.59
+             <span class="m">8</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.1  <span class="m">6000</span>        10.0.0.1              <span class="m">6000</span>      sdb9 100.00        <span class="m">102</span>   -0.39
+             <span class="m">9</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.1  <span class="m">6000</span>        10.0.0.1              <span class="m">6000</span>     sdb10 100.00        <span class="m">102</span>   -0.39
+            <span class="m">10</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.2  <span class="m">6000</span>        10.0.0.2              <span class="m">6000</span>      sdb1 100.00        <span class="m">102</span>   -0.39
+            <span class="m">11</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.2  <span class="m">6000</span>        10.0.0.2              <span class="m">6000</span>      sdb2 100.00        <span class="m">102</span>   -0.39
+            <span class="m">12</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.2  <span class="m">6000</span>        10.0.0.2              <span class="m">6000</span>      sdb3 100.00        <span class="m">103</span>    0.59
+            <span class="m">13</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.2  <span class="m">6000</span>        10.0.0.2              <span class="m">6000</span>      sdb4 100.00        <span class="m">103</span>    0.59
+            <span class="m">14</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.2  <span class="m">6000</span>        10.0.0.2              <span class="m">6000</span>      sdb5 100.00        <span class="m">102</span>   -0.39
+            <span class="m">15</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.2  <span class="m">6000</span>        10.0.0.2              <span class="m">6000</span>      sdb6 100.00        <span class="m">103</span>    0.59
+            <span class="m">16</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.2  <span class="m">6000</span>        10.0.0.2              <span class="m">6000</span>      sdb7 100.00        <span class="m">102</span>   -0.39
+            <span class="m">17</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.2  <span class="m">6000</span>        10.0.0.2              <span class="m">6000</span>      sdb8 100.00        <span class="m">102</span>   -0.39
+            <span class="m">18</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.2  <span class="m">6000</span>        10.0.0.2              <span class="m">6000</span>      sdb9 100.00        <span class="m">102</span>   -0.39
+            <span class="m">19</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.2  <span class="m">6000</span>        10.0.0.2              <span class="m">6000</span>     sdb10 100.00        <span class="m">103</span>    0.59
+            <span class="m">20</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.3  <span class="m">6000</span>        10.0.0.3              <span class="m">6000</span>      sdb1 100.00        <span class="m">102</span>   -0.39
+            <span class="m">21</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.3  <span class="m">6000</span>        10.0.0.3              <span class="m">6000</span>      sdb2 100.00        <span class="m">103</span>    0.59
+            <span class="m">22</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.3  <span class="m">6000</span>        10.0.0.3              <span class="m">6000</span>      sdb3 100.00        <span class="m">103</span>    0.59
+            <span class="m">23</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.3  <span class="m">6000</span>        10.0.0.3              <span class="m">6000</span>      sdb4 100.00        <span class="m">103</span>    0.59
+            <span class="m">24</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.3  <span class="m">6000</span>        10.0.0.3              <span class="m">6000</span>      sdb5 100.00        <span class="m">102</span>   -0.39
+            <span class="m">25</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.3  <span class="m">6000</span>        10.0.0.3              <span class="m">6000</span>      sdb6 100.00        <span class="m">103</span>    0.59
+            <span class="m">26</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.3  <span class="m">6000</span>        10.0.0.3              <span class="m">6000</span>      sdb7 100.00        <span class="m">102</span>   -0.39
+            <span class="m">27</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.3  <span class="m">6000</span>        10.0.0.3              <span class="m">6000</span>      sdb8 100.00        <span class="m">102</span>   -0.39
+            <span class="m">28</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.3  <span class="m">6000</span>        10.0.0.3              <span class="m">6000</span>      sdb9 100.00        <span class="m">102</span>   -0.39
+            <span class="m">29</span>       <span class="m">1</span>     <span class="m">1</span>        10.0.0.3  <span class="m">6000</span>        10.0.0.3              <span class="m">6000</span>     sdb10 100.00        <span class="m">102</span>   -0.39
+</code></pre></div>
+
+
+<p>Lets consider device with id 0. The number of partitions on it is 102. The desired number of partitions is 102.4. So, it’s ‘off’ by 0.4 on negative side. Hence balance of this device is
+0.<sup>4</sup>&frasl;<sub>102</sub>.4 * 100 = 0.39. This means this device has 0.39% lesser number of partitions than the total desired partitions.</p>
+
+<p>Similarly, the balance is calculated for each of the device in the ring, in this case 30 devices.</p>
+
+<p>The balance of the ring is the highest modulo value of the balance of a device in the list of devices present in the ring. In this case, that value is 0.59 present in devices with id 1, 5, 6, 7 …23, 25.</p>
+
+<p>With this, for balance to be 0(the ideal world), the total number of partitions should be evenly divisible by total number of devices in the ring.</p>
+
+                </section>
+            </article>
+            <footer id="post-meta" class="clearfix">
+                <a href="https://twitter.com/keshavab">
+                        <img class="avatar" src="http://keshavab.github.io/images/avatar.png">
+                        <div>
+                            
+                            <span></span>
+                        </div>
+                    </a>
+                <section id="sharing">
+                    
+<a class="twitter" href="https://twitter.com/intent/tweet?text=Ring%2c%20What%e2%80%99s%20your%20balance%20%3f - http%3a%2f%2fkeshavab.github.io%2f2014%2f08%2f31%2fring_whats_your_balance by @keshavab"><span class="icon-twitter"> Tweet</span></a>
+
+
+
+
+                </section>
+            </footer>
+
+            <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'keshavabharadwaj';
+    var disqus_identifier = 'http:\/\/keshavab.github.io\/2014\/08\/31\/ring_whats_your_balance';
+    var disqus_title = 'Ring, What’s your balance ?';
+    var disqus_url = 'http:\/\/keshavab.github.io\/2014\/08\/31\/ring_whats_your_balance';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+            <ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+    
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/03/31/closure_golang">Closures in golang<aside class="dates">Mar 31</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/03/15/hugo_theme_not_rendered">Hugo theme not rendered correctly<aside class="dates">Mar 15</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/02/29/s3-compatible-storage-systems">S3 compatible storage systems<aside class="dates">Feb 29</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2015/09/01/container_ecosystem">Container ecosystem - applications, tools and technologies.<aside class="dates">Sep 1</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2015/08/21/ansible_include_with_items">Ansible - include &#43; with_items back in 2.0<aside class="dates">Aug 21</aside></a>
+        </li>
+        
+   
+</ul>
+
+            <footer id="footer">
+    
+        
+<div id="social">
+    
+    <a class="symbol" href="http://www.github.com/keshavab">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="http://www.twitter.com/keshavab">
+        circletwitterbird
+    </a>
+    
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2016 Keshava Bharadwaj
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://keshavab.github.io/js/main.js"></script>
+<script src="http://keshavab.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-66360859-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+    </body>
+</html>

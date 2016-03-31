@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>S3 Api on keshavab.io</title>
+    <link>http://keshavab.github.io/tags/s3-api/</link>
+    <description>Recent content in S3 Api on keshavab.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 29 Feb 2016 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://keshavab.github.io/tags/s3-api/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>S3 compatible storage systems</title>
+      <link>http://keshavab.github.io/2016/02/29/s3-compatible-storage-systems</link>
+      <pubDate>Mon, 29 Feb 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://keshavab.github.io/2016/02/29/s3-compatible-storage-systems</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://aws.amazon.com/s3/&#34;&gt;Amazon S3&lt;/a&gt; has become the de facto standard for object storage. In one of
+our projects we had to evaluate various storage systems compatible with S3 API.
+The following is a list of storage systems that have &lt;a href=&#34;https://aws.amazon.com/s3/&#34;&gt;Amazon S3&lt;/a&gt; api compatible interfaces.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.openstack.org/developer/swift/&#34;&gt;Openstack swift&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.skylable.com/products/sx/&#34;&gt;Skylable&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.basho.com/riakcs/latest/&#34;&gt;Basho riak&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://ceph.com/&#34;&gt;Red Hat ceph&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;*&lt;a href=&#34;https://www.rackspace.com/en-us/cloud/files&#34;&gt;Rackspace cloud files&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;`&lt;a href=&#34;https://www.caringo.com/solutions/cloud-storage.html&#34;&gt;caringo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.minio.io/&#34;&gt;Minio&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;*&lt;a href=&#34;https://cloud.google.com/storage/&#34;&gt;Google cloud storage&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;`&lt;a href=&#34;https://www.exoscale.ch/open-cloud/storage/&#34;&gt;exoscale&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://openio.io/product/&#34;&gt;OpenIO&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;* - managed, ` - licensed, rest - open source&lt;/p&gt;
+
+&lt;p&gt;While the advantages of using S3 is obvious, others (non-managed ones) have the same lifecycle of hugging hardware + software learning curve + ops
+maintenance cycles.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

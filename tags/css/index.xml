@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Css on keshavab.io</title>
+    <link>http://keshavab.github.io/tags/css/</link>
+    <description>Recent content in Css on keshavab.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 15 Mar 2016 08:04:34 +0530</lastBuildDate>
+    <atom:link href="http://keshavab.github.io/tags/css/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Hugo theme not rendered correctly</title>
+      <link>http://keshavab.github.io/2016/03/15/hugo_theme_not_rendered</link>
+      <pubDate>Tue, 15 Mar 2016 08:04:34 +0530</pubDate>
+      
+      <guid>http://keshavab.github.io/2016/03/15/hugo_theme_not_rendered</guid>
+      <description>&lt;p&gt;You have built your site with Hugo. &lt;code&gt;hugo server&lt;/code&gt; command renders the site fine. But hosting it on
+github pages or your webserver renders it garbled or does not render correctly. If you have hit the above
+behavior, you are not alone.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;tl; dr&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;The baseurl in config.(yaml|toml) should point to the url on which the site is hosted and not the domain name.
+For e.g. if you are hosting the site on github, setting should be
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;nx&#34;&gt;baseurl&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;http://&amp;lt;your-user-name&amp;gt;.github.io/&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+and not yourdomain.com&lt;/p&gt;
+
+&lt;p&gt;if you are hosting locally or on your own, it should be
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;nx&#34;&gt;baseurl&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;http://&amp;lt;ip-address&amp;gt;:&amp;lt;port&amp;gt;/&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Note the &lt;strong&gt;trailing /&lt;/strong&gt; that ends the base url.&lt;/p&gt;
+
+&lt;p&gt;The problem is with the base url setting and styling associated with it. Normally most of the themes
+have partials(partial html snippets which make up a page) like following below.
+&lt;script src=&#34;//gist.github.com/keshavab/7efd202b851cd6080650.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Ideally, the themes should have used relative indexes instead of absolutely referring urls, since
+browsers take care of them. However, most of themes out there refer resources from &lt;code&gt;Site.BaseURL&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The reason why this works when run with &lt;code&gt;hugo server&lt;/code&gt; command is that, Hugo internally replaces the baseurl
+with the &lt;code&gt;localhost:port&lt;/code&gt; to &lt;code&gt;localhost:1313&lt;/code&gt;(defaults) and hence they are rendered correctly.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

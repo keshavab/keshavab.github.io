@@ -1,0 +1,940 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>keshavab.io</title>
+    <link>http://keshavab.github.io/</link>
+    <description>Recent content on keshavab.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 31 Mar 2016 15:14:47 +0530</lastBuildDate>
+    <atom:link href="http://keshavab.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Closures in golang</title>
+      <link>http://keshavab.github.io/2016/03/31/closure_golang</link>
+      <pubDate>Thu, 31 Mar 2016 15:14:47 +0530</pubDate>
+      
+      <guid>http://keshavab.github.io/2016/03/31/closure_golang</guid>
+      <description>
+
+&lt;p&gt;A closure is a function that you can pass around that retains the same &amp;ldquo;environment&amp;rdquo; as the one it had when it was created.
+In other words, the function defined in the closure &amp;lsquo;remembers&amp;rsquo; the environment in which it was created. It takes some time to
+get a hang of closures. At least it took me sometime to get going on closures. Hopefully this post will help you understand the same.&lt;/p&gt;
+
+&lt;p&gt;Before getting into what &lt;code&gt;closures&lt;/code&gt; are, lets understand the basics first - functions/ anonymous functions.&lt;/p&gt;
+
+&lt;h4 id=&#34;1-anonymous-functions:9a4de13f2c4c2ce360aa94a256c62530&#34;&gt;1. Anonymous functions&lt;/h4&gt;
+
+&lt;p&gt;Functions with name are named functions!. Functions which can be created without a name
+are anonymous functions. &lt;em&gt;That was easy :)&lt;/em&gt;. As you can see from code snippet, one can create an anon function and
+call directly or one can even pass around anonymous functions. Generally closures make use of
+anonymous function, whereas that always need not be the case. In golang, one can create anon functions
+and pass functions as arguments to functions. Functions are first class.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;getPrintMessage&lt;/code&gt; creates an anonymous function and returns it. &lt;code&gt;printfunc&lt;/code&gt; gets the
+anon function and calls it.
+&lt;script src=&#34;//gist.github.com/keshavab/279e74a2c9b16fbc90c5db33fce080c1.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;2-closures:9a4de13f2c4c2ce360aa94a256c62530&#34;&gt;2. Closures&lt;/h4&gt;
+
+&lt;p&gt;The function foo is an inner function and still has access to variable text, which is outside of
+foo but belongs to outer function. This function foo is called a &lt;strong&gt;&lt;code&gt;closure&lt;/code&gt;&lt;/strong&gt;. It is said to
+&lt;em&gt;close over&lt;/em&gt; the variables in the outer scope. In this case it &lt;em&gt;closes over&lt;/em&gt; &lt;code&gt;text&lt;/code&gt; variable.
+&lt;em&gt;&lt;code&gt;foo&lt;/code&gt;&lt;/em&gt; always holds a reference to the &lt;code&gt;text&lt;/code&gt; variable.
+&lt;script src=&#34;//gist.github.com/keshavab/8f4195dc68bb3200ef3c3172976bb3aa.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;3-returning-closures-and-using-outside:9a4de13f2c4c2ce360aa94a256c62530&#34;&gt;3. Returning closures and using outside&lt;/h4&gt;
+
+&lt;p&gt;In this example we see how we can return the closure and use it outside of the function where
+it is declared. &lt;em&gt;foo&lt;/em&gt; is a closure which is returned to the main function when &lt;em&gt;outer&lt;/em&gt; is called.
+The actual execution of &lt;em&gt;foo&lt;/em&gt; happens in main when it is invoked using &lt;strong&gt;()&lt;/strong&gt;. The code outputs &lt;code&gt;Modified hello&lt;/code&gt;.
+So the &lt;em&gt;closure&lt;/em&gt; &lt;em&gt;foo&lt;/em&gt; still has a reference to the variable &lt;em&gt;text&lt;/em&gt; even though the outer function has exited.
+&lt;script src=&#34;//gist.github.com/keshavab/8a8f95286cc2111aafe5e0cd03015f07.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;4-closures-and-state:9a4de13f2c4c2ce360aa94a256c62530&#34;&gt;4. Closures and state&lt;/h4&gt;
+
+&lt;p&gt;Closures preserve state. What this implies is the the state of variables is contained in a closure
+at the time of creation(declaration). What this essentially means is&lt;br /&gt;
+- the state(variable references) are &lt;strong&gt;same&lt;/strong&gt; per creation of a closure. All closures created together have same state.&lt;br /&gt;
+- the state are &lt;strong&gt;different&lt;/strong&gt; for different creations of a closure.&lt;br /&gt;
+Lets digest it with the below gist. Below is a function counter which accepts a start value and returns
+two closures - counter(ctr) and incrementer(incr). This implies per invocation of counter, the state (&lt;code&gt;start&lt;/code&gt; in this case)
+is the same value referenced by both the closures. For another invocation of counter, there would be a different &lt;code&gt;start&lt;/code&gt;
+reference which would be shared by both the closures.&lt;/p&gt;
+
+&lt;p&gt;In this case first invocation of counter(100), would generate a closure pair ctr, intr which point to 100.
+Second invocation of counter(100) would generate &lt;strong&gt;another&lt;/strong&gt; closure pair which point to &lt;em&gt;different&lt;/em&gt; 100.
+&lt;script src=&#34;//gist.github.com/keshavab/6657265a36ec1748ee0ea1fe71b7e91f.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;As you can see from output, Initially both values would be 100.
+and when incr() is incremented, ctr1() would be same where as ctr() would be 101.
+similarly when incr1() is incremented twice, ctr() would be same as 101, while ctr1() would be 102.
+&lt;script src=&#34;//gist.github.com/keshavab/069a0486aa8861a9920defc4f8d36514.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;5-gotchas:9a4de13f2c4c2ce360aa94a256c62530&#34;&gt;5. Gotchas&lt;/h4&gt;
+
+&lt;p&gt;One obvious pitfall is creating closures within a loop.
+consider the following snippet.&lt;/p&gt;
+
+&lt;p&gt;We are creating 4 closures based on slice and returning a slice of closures.
+Each closure does the same - print index and the value at that index.
+Main function runs through all closures and calls each of them.
+&lt;script src=&#34;//gist.github.com/keshavab/b87b506d548f476855909b4613cdcdd2.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Lets see the output.
+&lt;script src=&#34;//gist.github.com/keshavab/1e9cb6ef77d5f214e1297e57f0179724.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;code&gt;Surprising&lt;/code&gt;&lt;/em&gt; right!. Lets uncover this.
+If we go back to closure basics, all the closures created once, have reference to same object.
+In this case, all of them point to same i and same arr. When the function is actually called in &lt;code&gt;main&lt;/code&gt;,
+the value of i is 3, and hence all of them point to same &lt;code&gt;arr[3]&lt;/code&gt; which is &lt;code&gt;4&lt;/code&gt;. Hence the produced output.&lt;/p&gt;
+
+&lt;p&gt;Hopefully this clears some air on closures and helps in understanding reading of code using closures.&lt;/p&gt;
+
+&lt;p&gt;Suggested reading - These are two excellent articles i found useful. Though they are presented in Javascript,
+the concepts remain the same and are applicable.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://developer.mozilla.org/en/docs/Web/JavaScript/Closures&#34;&gt;Mozilla developer network - closures&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/111102/how-do-javascript-closures-work?rq=1&#34;&gt;stackoverflow closure discussion&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Hugo theme not rendered correctly</title>
+      <link>http://keshavab.github.io/2016/03/15/hugo_theme_not_rendered</link>
+      <pubDate>Tue, 15 Mar 2016 08:04:34 +0530</pubDate>
+      
+      <guid>http://keshavab.github.io/2016/03/15/hugo_theme_not_rendered</guid>
+      <description>&lt;p&gt;You have built your site with Hugo. &lt;code&gt;hugo server&lt;/code&gt; command renders the site fine. But hosting it on
+github pages or your webserver renders it garbled or does not render correctly. If you have hit the above
+behavior, you are not alone.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;tl; dr&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;The baseurl in config.(yaml|toml) should point to the url on which the site is hosted and not the domain name.
+For e.g. if you are hosting the site on github, setting should be
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;nx&#34;&gt;baseurl&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;http://&amp;lt;your-user-name&amp;gt;.github.io/&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+and not yourdomain.com&lt;/p&gt;
+
+&lt;p&gt;if you are hosting locally or on your own, it should be
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;nx&#34;&gt;baseurl&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;http://&amp;lt;ip-address&amp;gt;:&amp;lt;port&amp;gt;/&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Note the &lt;strong&gt;trailing /&lt;/strong&gt; that ends the base url.&lt;/p&gt;
+
+&lt;p&gt;The problem is with the base url setting and styling associated with it. Normally most of the themes
+have partials(partial html snippets which make up a page) like following below.
+&lt;script src=&#34;//gist.github.com/keshavab/7efd202b851cd6080650.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Ideally, the themes should have used relative indexes instead of absolutely referring urls, since
+browsers take care of them. However, most of themes out there refer resources from &lt;code&gt;Site.BaseURL&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The reason why this works when run with &lt;code&gt;hugo server&lt;/code&gt; command is that, Hugo internally replaces the baseurl
+with the &lt;code&gt;localhost:port&lt;/code&gt; to &lt;code&gt;localhost:1313&lt;/code&gt;(defaults) and hence they are rendered correctly.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>S3 compatible storage systems</title>
+      <link>http://keshavab.github.io/2016/02/29/s3-compatible-storage-systems</link>
+      <pubDate>Mon, 29 Feb 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://keshavab.github.io/2016/02/29/s3-compatible-storage-systems</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://aws.amazon.com/s3/&#34;&gt;Amazon S3&lt;/a&gt; has become the de facto standard for object storage. In one of
+our projects we had to evaluate various storage systems compatible with S3 API.
+The following is a list of storage systems that have &lt;a href=&#34;https://aws.amazon.com/s3/&#34;&gt;Amazon S3&lt;/a&gt; api compatible interfaces.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.openstack.org/developer/swift/&#34;&gt;Openstack swift&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.skylable.com/products/sx/&#34;&gt;Skylable&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.basho.com/riakcs/latest/&#34;&gt;Basho riak&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://ceph.com/&#34;&gt;Red Hat ceph&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;*&lt;a href=&#34;https://www.rackspace.com/en-us/cloud/files&#34;&gt;Rackspace cloud files&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;`&lt;a href=&#34;https://www.caringo.com/solutions/cloud-storage.html&#34;&gt;caringo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.minio.io/&#34;&gt;Minio&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;*&lt;a href=&#34;https://cloud.google.com/storage/&#34;&gt;Google cloud storage&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;`&lt;a href=&#34;https://www.exoscale.ch/open-cloud/storage/&#34;&gt;exoscale&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://openio.io/product/&#34;&gt;OpenIO&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;* - managed, ` - licensed, rest - open source&lt;/p&gt;
+
+&lt;p&gt;While the advantages of using S3 is obvious, others (non-managed ones) have the same lifecycle of hugging hardware + software learning curve + ops
+maintenance cycles.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Container ecosystem - applications, tools and technologies.</title>
+      <link>http://keshavab.github.io/2015/09/01/container_ecosystem</link>
+      <pubDate>Tue, 01 Sep 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://keshavab.github.io/2015/09/01/container_ecosystem</guid>
+      <description>&lt;p&gt;Container ecosystem is evolving and bringing along with it a hell lot of other technologies
+and tools in its ecosystem. This post aims to list out all such various tools and technologies
+that are in creating platforms using containers.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Applications, tools and technologies&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/docker.png&#34; alt=&#34;docker logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://www.docker.com/&#34;&gt;Docker&lt;/a&gt;. The first citizen of container ecosystem. The &lt;em&gt;de-facto&lt;/em&gt; standard for containers. If it&amp;rsquo;s a container, it&amp;rsquo;s most likely docker.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/coreos.jpeg&#34; alt=&#34;coreos logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://coreos.com/&#34;&gt;Coreos&lt;/a&gt;. The operating system which supposedly runs docker(containers) the best.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/mesos.png&#34; alt=&#34;mesos logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;http://mesos.apache.org/&#34;&gt;Apache Mesos&lt;/a&gt;. The gold standard for data center resource scheduling.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/marathon.jpeg&#34; alt=&#34;marathon logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://mesosphere.github.io/marathon/&#34;&gt;Marathon&lt;/a&gt;. A cluster-wide init and control system for services in cgroups or Docker containers. Runs on top of &lt;a href=&#34;http://mesos.apache.org/&#34;&gt;Apache Mesos&lt;/a&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/kubernetes.jpeg&#34; alt=&#34;kubernetes logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;http://kubernetes.io/&#34;&gt;Kubernetes&lt;/a&gt;. An orchestration system for Docker containers. Distilled with years of experience from &lt;em&gt;Google&lt;/em&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/rocket.jpeg&#34; alt=&#34;rocket logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/coreos/rkt&#34;&gt;Rocket&lt;/a&gt;. Container runtime from coreos.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/etcd.jpeg&#34; alt=&#34;etcd logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://coreos.com/etcd/&#34;&gt;etcd&lt;/a&gt;. A highly-available key value store for shared configuration and service discovery.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/consul.jpeg&#34; alt=&#34;consul logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://www.consul.io/&#34;&gt;consul&lt;/a&gt;. Tool for discovering and configuring services in your infrastructure. Provides service discovery, health check, key/value store and supports multi datacenter ground up.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/flocker.png&#34; alt=&#34;flocker logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://clusterhq.com/flocker/introduction/&#34;&gt;Flocker&lt;/a&gt;. Data volume manager for your Dockerized applications. Unlike a Docker data volume which is tied to a single server, a Flocker data volume, called a dataset, is portable and can be used with any container in your cluster.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/calico.png&#34; alt=&#34;calico logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;http://www.projectcalico.org/&#34;&gt;Calico&lt;/a&gt;. An open source solution for virtual networking&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/weave.png&#34; alt=&#34;weave logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;http://weave.works/&#34;&gt;Weave&lt;/a&gt;. Weave creates a virtual network that connects Docker containers deployed across multiple hosts and enables their automatic discovery.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/flannel.png&#34; alt=&#34;flannel logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/coreos/flannel&#34;&gt;Flannel&lt;/a&gt;. flannel is a virtual network that gives a subnet to each host for use with container runtimes.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;&lt;em&gt;Coreos Fleet&lt;/em&gt;&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://coreos.com/using-coreos/clustering/&#34;&gt;Fleet&lt;/a&gt;. With fleet, you can treat your CoreOS cluster as if it shared a single init system.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/dockerswarm.svg&#34; alt=&#34;swarm logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://www.docker.com/docker-swarm&#34;&gt;Docker Swarm&lt;/a&gt;. Provides native clustering capabilities to turn a group of Docker engines into a single, virtual Docker Engine&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/dockercompose.svg&#34; alt=&#34;compose logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://www.docker.com/docker-compose&#34;&gt;Docker Compose&lt;/a&gt;. Docker Compose allows you to define your multi-container application with all of its dependencies in a single file, then spin your application up in a single command.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/dockermachine.svg&#34; alt=&#34;machine logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;http://docs.docker.com/machine/&#34;&gt;Docker Machine&lt;/a&gt;. Machine lets you create Docker hosts on your computer, on cloud providers, and inside your own data center.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/kitematic.png&#34; alt=&#34;kitematic logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://kitematic.com/&#34;&gt;Kitematic&lt;/a&gt;. Kitematic is the fastest and easiest way to start using Docker on your laptop.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/packer.png&#34; alt=&#34;packer logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;Packer is a tool for creating machine and container images for multiple platforms from a single source configuration.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;strong&gt;p.s&lt;/strong&gt;: I&amp;rsquo;ve added the tools/technologies which i am aware of. In case you find anything missing in the list,
+drop a comment below or dm me on twitter and i would be more than happy to add them.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ansible - include &#43; with_items back in 2.0</title>
+      <link>http://keshavab.github.io/2015/08/21/ansible_include_with_items</link>
+      <pubDate>Fri, 21 Aug 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://keshavab.github.io/2015/08/21/ansible_include_with_items</guid>
+      <description>&lt;p&gt;One of the widely used(abused) feature of &lt;a href=&#34;https://github.com/ansible/ansible&#34;&gt;Ansible&lt;/a&gt; which was taken back in 1.6 is back in 2.0.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;include:&lt;/strong&gt; statement to include a file with variable name&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;include:&lt;/strong&gt; statement with &lt;em&gt;with_items&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Prior to 2.0, any of these operations would always result in the following error:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;nn&#34;&gt;---&lt;/span&gt;
+&lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;include&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;{{&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;my_var&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;}}.yml&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;ERROR: file not found: /path/to/ansible/provision/&lt;span class=&#34;o&#34;&gt;{{&lt;/span&gt;my_var&lt;span class=&#34;o&#34;&gt;}}&lt;/span&gt;.yml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;nn&#34;&gt;---&lt;/span&gt;
+&lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;include&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;{{&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;item&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;}}&amp;quot;&lt;/span&gt;
+  &lt;span class=&#34;l-Scalar-Plain&#34;&gt;with_items&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt;
+  &lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;{{&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;my_var&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;}}.yml&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;ERROR: &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;DEPRECATED&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: include + with_items is a removed deprecated feature. Please update your playbooks.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;With 2.0(&lt;a href=&#34;http://docs.ansible.com/ansible/intro_installation.html#running-from-source&#34;&gt;currently devel branch&lt;/a&gt;), these are possible now:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;include:&lt;/strong&gt; statement to include a file with variable name
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;nn&#34;&gt;---&lt;/span&gt;
+&lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;hosts&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;all&lt;/span&gt;
+  &lt;span class=&#34;l-Scalar-Plain&#34;&gt;tasks&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt;
+  &lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;include&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;{{&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;my_var&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;}}.yml&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;include:&lt;/strong&gt; statement with &lt;em&gt;with_items&lt;/em&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;nn&#34;&gt;---&lt;/span&gt;
+&lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;hosts&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;all&lt;/span&gt;
+  &lt;span class=&#34;l-Scalar-Plain&#34;&gt;tasks&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt;
+  &lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;include&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;play.yml {{ item }}&lt;/span&gt;
+  &lt;span class=&#34;l-Scalar-Plain&#34;&gt;with_items&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt;
+  &lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;var_1&lt;/span&gt;
+  &lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;var_2&lt;/span&gt;
+  &lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;var_3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;This would help in dynamically including a file based on a variable or a fact. This would also help to iterate over the same
+play/file with different values.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Kuberetes vs Mararthon - how they fare</title>
+      <link>http://keshavab.github.io/2015/08/19/kubernetes_marathon</link>
+      <pubDate>Wed, 19 Aug 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://keshavab.github.io/2015/08/19/kubernetes_marathon</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://kubernetes.io/&#34;&gt;Kubernetes(k8s)&lt;/a&gt; is trying to evolve itself as the defacto standard for container
+management. Backed by google it has all the odds to succeed. &lt;a href=&#34;https://mesosphere.github.io/marathon/&#34;&gt;Marathon&lt;/a&gt; is another
+such application which can be used on top of mesos for container management and has been around for a while. In this post we
+will try to see how they fare against each other.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Feature&lt;/th&gt;
+&lt;th&gt;Kubernetes(K8s)&lt;/th&gt;
+&lt;th&gt;Marathon&lt;/th&gt;
+&lt;th&gt;K8s +&amp;rsquo;s&lt;/th&gt;
+&lt;th&gt;Marathon +&amp;rsquo;s&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Ability to run Docker and other container types&lt;/td&gt;
+&lt;td&gt;no, only docker as on date&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;-1&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Ability to run non container applications&lt;/td&gt;
+&lt;td&gt;no, only docker containers&lt;/td&gt;
+&lt;td&gt;yes. can run non-containerized applications too&lt;/td&gt;
+&lt;td&gt;-1&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Working with Mesos&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Working with other underlying infra&lt;/td&gt;
+&lt;td&gt;yes, not bound to mesos. Can work independently and also with other platforms like &lt;a href=&#34;https://www.openstack.org/&#34;&gt;OpenStack&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;no, strongly tied to mesos&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;td&gt;-1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Run containers with automatic recovery of failed containers&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Ability to run co-scheduled, co-located containers&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;no&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;td&gt;-1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Ability to launch sidekick containers&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;no&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;td&gt;-1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;REST API&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;UI&lt;/td&gt;
+&lt;td&gt;no&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;-1&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Batteries included rolling updates and upgrades&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;sort of. was introduced in later versions&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Service discovery, load balancing, inbuilt&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;no. need to integrate with consul, haproxy&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;td&gt;-1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;em&gt;* as on 19/08/15&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;running-k8s-on-top-of-mesos:2222a28e059760a7c4fb8913760d6b1f&#34;&gt;Running K8s on top of Mesos&lt;/h3&gt;
+
+&lt;p&gt;With the Mesos integration layer, K8s acts as a Mesos framework, scheduling pods as Mesos tasks. K8s-Mesos integrates the K8s scheduler API with the Mesos scheduler API, matching up requested pods to resource offers. Each scheduled pod is also a Mesos task. From a user’s perspective, the integration is transparent. Mesos is the “gold standard” for large-scale production clusters running containers. This integration would give best container management experience with best in class Mesos resource scheduler.&lt;/p&gt;
+
+&lt;h3 id=&#34;so-kubernetes-or-marathon:2222a28e059760a7c4fb8913760d6b1f&#34;&gt;So, Kubernetes or Marathon?&lt;/h3&gt;
+
+&lt;p&gt;If you are &lt;strong&gt;only&lt;/strong&gt; into containers, then K8s may be the way to go. Because&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;K8s was built ground up with the sole aim of deploying, orchestrating and maintaining containers drawing on over ten years of experience running containers at massive scale @ Google.&lt;/li&gt;
+&lt;li&gt;Personally, i feel being backed by google and now collaborating with &lt;a href=&#34;https://mesosphere.com/&#34;&gt;Mesosphere&lt;/a&gt;, it has more muscle power and mileage to outlast marathon.&lt;/li&gt;
+&lt;li&gt;The recently formed &lt;a href=&#34;https://cncf.io/&#34;&gt;Cloud Native Computing Foundation&lt;/a&gt;, where both Google and Mesosphere are part of have made K8s as the seed technology along with Mesos. This vindicates the point mentioned above.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes vagrant - unable to connect to api server</title>
+      <link>http://keshavab.github.io/2015/08/17/kubernetes_vagrant_not_working</link>
+      <pubDate>Mon, 17 Aug 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://keshavab.github.io/2015/08/17/kubernetes_vagrant_not_working</guid>
+      <description>&lt;p&gt;When running Kubernetes(K8s) vagrant(sometimes standalone installations), the vagrant up fails with the following error
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;Validating master
+Validating minion-1
+.............
+Waiting &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; each minion to be registered with cloud provider
+error: couldn&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;t &lt;span class=&#34;nb&#34;&gt;read &lt;/span&gt;version from server: Get https://10.245.1.2/api: dial tcp 10.245.1.2:443: connection refused
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;This implies the kubectl client is unable to connect to the kube-api server.
+This can happen due to a couple of reasons -&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Prior K8s installation have left config trace in home directory. Delete the contents of &lt;em&gt;~/.kube&lt;/em&gt; directory, and re provision
+your vagrants.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;The route for the kube-api server could be missing. Add the route
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;c&#34;&gt;#sudo route -nv add -net 10.245.1 -interface vboxnet0&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+[Note: you should replace it with the subnet vagrant has created for you]&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Kitematic freezes at 99%</title>
+      <link>http://keshavab.github.io/2015/07/25/kitematic_freeze</link>
+      <pubDate>Sat, 25 Jul 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://keshavab.github.io/2015/07/25/kitematic_freeze</guid>
+      <description>&lt;p&gt;There is a case when &lt;a href=&#34;https://kitematic.com/&#34;&gt;Kitematic&lt;/a&gt; freezes or hangs when started at 99%.
+One of reasons is, there will be no route to the virtual box vm created by kitematic.&lt;/p&gt;
+
+&lt;p&gt;run
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;c&#34;&gt;# netstat -rn&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+you will not find an entry in the output for 192.168.99(kitematic docker vm), and since it times out reaching
+for the vm, the launch of kitematic freezes at 99%.&lt;/p&gt;
+
+&lt;p&gt;Solution:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Quit Kitematic after it freezes.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Add a route to kitematic vm by running following commands -
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;ifconfig &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep -B &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; 192.168.99
+vboxnet2: &lt;span class=&#34;nv&#34;&gt;flags&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;8843&amp;lt;UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST&amp;gt; mtu 1500
+	ether 0a:00:27:00:00:02
+	inet 192.168.99.1 netmask 0xffffff00 broadcast 192.168.99.255
+&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;sudo route -nv add -net 192.168.99 -interface vboxnet2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The output of netstat -rn after adding should be something like this -
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;KEHP-M-X03J:.kube keshava&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;netstat -rn
+Routing tables
+
+Internet:
+Destination        Gateway            Flags        Refs      Use   Netif Expire
+127.0.0.1          127.0.0.1          UH              &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;488828&lt;/span&gt;     lo0
+192.168.99         link#13            UC              &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; vboxnet
+192.168.99.100     8:0:27:85:2:fe     UHLWIi          &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;64&lt;/span&gt; vboxnet   1146
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Restart Kitematic. It should be up and running by now.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Swift – Object metadata explained</title>
+      <link>http://keshavab.github.io/2014/09/24/swift_object_metadata</link>
+      <pubDate>Wed, 24 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://keshavab.github.io/2014/09/24/swift_object_metadata</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;http://keshavab.github.io/assets/metadata.jpg&#34; alt=&#34;metadata&#34; /&gt;
+Openstack Swift – we all know stores its objects reliably, in a replicated manner. How does swift store the information about the object itself ? i.e. metadata information ?&lt;/p&gt;
+
+&lt;p&gt;The answer is  xattrs. a.k.a extended attributes.
+&lt;strong&gt;Extended file attributes&lt;/strong&gt; is a file system feature that enables users to associate computer files with metadata not interpreted by the file system.  These are properties organized in (name, value) pairs, optionally set to files or directories in order to record information which cannot be stored in the file itself.&lt;/p&gt;
+
+&lt;p&gt;Names are null-terminated printable character strings which are up to 256 bytes in length, while their associated values can contain up to 64 KB of binary data in case of XFS.
+More on extended file attributes &lt;a href=&#34;http://en.wikipedia.org/wiki/Extended_file_attributes&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The extended attributes can be accessed by commands getfattr and set using setfattr.
+Consider the following example of a file obj-2 uploaded using swift.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;c&#34;&gt;# swift -A http://127.0.0.1:8080/auth/v1.0 -U test:tester -K testing upload cont1 obj-2&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Using swift-get-nodes, we can see the partition for the uploaded object is 859 and hash is d6e5c4cbcdfb4b1f5e786d4e624b24e4
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;c&#34;&gt;# swift-get-nodes  -a /etc/swift/object.ring.gz AUTH_test/cont1/obj-2&lt;/span&gt;
+
+Account  	AUTH_test
+Container	cont1
+Object   	obj-2
+
+
+Partition	859
+Hash     	d6e5c4cbcdfb4b1f5e786d4e624b24e4
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Using this partition information, one can lookup to the file on the swift node.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;|-- 1 -&amp;gt; /mnt/sdb1/1
+|   `-- node
+|       `-- sdb1
+|           |-- objects
+|           |   |-- 155
+|           |   |   `-- 716
+|           |   |       `-- 26ddfcaf7d30709da094d31572a8d716
+|           |   |           `-- 1412007292.47349.data
+|           |   `-- 859
+|           |       `-- 4e4
+|           |           `-- d6e5c4cbcdfb4b1f5e786d4e624b24e4
+|           |               `-- 1412011351.04987.data
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Now, lets examine the contents of “1412011351.04987.data” using getfattr.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;getfattr 1412011351.04987.data
+&lt;span class=&#34;c&#34;&gt;# file: 1412011351.04987.data&lt;/span&gt;
+user.swift.metadata
+
+&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;getfattr -n user.swift.metadata 1412011351.04987.data
+&lt;span class=&#34;c&#34;&gt;# file: 1412011351.04987.data&lt;/span&gt;
+user.swift.metadata&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;quot;�}q(UContent-LengthqU13UnameqU/AUTH_test/cont1/obj-2qUX-Object-Meta-MtimeU1412011318.077730qUETagqU 8ddd8be4b179a529afa5f2ffae4b9858qU&lt;/span&gt;
+&lt;span class=&#34;s2&#34;&gt;                                                                                                                                                                       X-TimestampU1412011351.04987U&lt;/span&gt;
+&lt;span class=&#34;s2&#34;&gt;                      Content-Typeq	Uapplication/octet-streamq12u.&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;As you can see, swift stores the metadata using extended attributes with the key “user.swift.metadata” and a dictionary as the value.
+Lets now uncover the binary value. Following is a python utility program which reads from stdin and unpickles the data. save it as swift-meta.py
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span class=&#34;c&#34;&gt;# swift-meta.py&lt;/span&gt;
+&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;pickle&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;with&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;open&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;/dev/stdin&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;as&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pickle&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;loads&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;read&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;())&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Now, lets rerun the getfattr on the object with swift-meta.py.(note –only-values, else unpickling will creak)
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;getfattr -d --only-values -n user.swift.metadata 1412011351.04987.data &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; python swift-meta.py
+&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Content-Length&amp;#39;&lt;/span&gt;: &lt;span class=&#34;s1&#34;&gt;&amp;#39;13&amp;#39;&lt;/span&gt;, &lt;span class=&#34;s1&#34;&gt;&amp;#39;name&amp;#39;&lt;/span&gt;: &lt;span class=&#34;s1&#34;&gt;&amp;#39;/AUTH_test/cont1/obj-2&amp;#39;&lt;/span&gt;, &lt;span class=&#34;s1&#34;&gt;&amp;#39;Content-Type&amp;#39;&lt;/span&gt;: &lt;span class=&#34;s1&#34;&gt;&amp;#39;application/octet-stream&amp;#39;&lt;/span&gt;, &lt;span class=&#34;s1&#34;&gt;&amp;#39;ETag&amp;#39;&lt;/span&gt;: &lt;span class=&#34;s1&#34;&gt;&amp;#39;8ddd8be4b179a529afa5f2ffae4b9858&amp;#39;&lt;/span&gt;, &lt;span class=&#34;s1&#34;&gt;&amp;#39;X-Timestamp&amp;#39;&lt;/span&gt;: &lt;span class=&#34;s1&#34;&gt;&amp;#39;1412011351.04987&amp;#39;&lt;/span&gt;, &lt;span class=&#34;s1&#34;&gt;&amp;#39;X-Object-Meta-Mtime&amp;#39;&lt;/span&gt;: &lt;span class=&#34;s1&#34;&gt;&amp;#39;1412011318.077730&amp;#39;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;This is what we get when we do a stat on an object. As you can see, the same values stored above are stat’ed.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;swift -A http://127.0.0.1:8080/auth/v1.0 -U &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt;:tester -K testing stat cont1 obj-2
+       Account: AUTH_test
+     Container: cont1
+        Object: obj-2
+  Content Type: application/octet-stream
+Content Length: 13
+ Last Modified: Mon, &lt;span class=&#34;m&#34;&gt;29&lt;/span&gt; Sep &lt;span class=&#34;m&#34;&gt;2014&lt;/span&gt; 17:22:32 GMT
+          ETag: 8ddd8be4b179a529afa5f2ffae4b9858
+    Meta Mtime: 1412011318.077730
+ Accept-Ranges: bytes
+    Connection: keep-alive
+   X-Timestamp: 1412011351.04987
+    X-Trans-Id: tx5c513a3673594d6d9ff16-00542998d9
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Now, lets add a custom metadata to see what gets stored in xattrs (–meta my_meta_1:orange).
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;swift -A http://127.0.0.1:8080/auth/v1.0 -U &lt;span class=&#34;nb&#34;&gt;test&lt;/span&gt;:tester -K testing post cont1 obj-2 --meta my_meta_1:orange
+
+&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;getfattr -d --only-values -n user.swift.metadata 1412012477.02665.data &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; python swift-meta.py
+&lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;Content-Length&amp;#39;&lt;/span&gt;: &lt;span class=&#34;s1&#34;&gt;&amp;#39;13&amp;#39;&lt;/span&gt;, &lt;span class=&#34;s1&#34;&gt;&amp;#39;name&amp;#39;&lt;/span&gt;: &lt;span class=&#34;s1&#34;&gt;&amp;#39;/AUTH_test/cont1/obj-2&amp;#39;&lt;/span&gt;, &lt;span class=&#34;s1&#34;&gt;&amp;#39;ETag&amp;#39;&lt;/span&gt;: &lt;span class=&#34;s1&#34;&gt;&amp;#39;8ddd8be4b179a529afa5f2ffae4b9858&amp;#39;&lt;/span&gt;, &lt;span class=&#34;s1&#34;&gt;&amp;#39;X-Object-Meta-My-Meta-1&amp;#39;&lt;/span&gt;: &lt;span class=&#34;s1&#34;&gt;&amp;#39;orange&amp;#39;&lt;/span&gt;, &lt;span class=&#34;s1&#34;&gt;&amp;#39;X-Timestamp&amp;#39;&lt;/span&gt;: &lt;span class=&#34;s1&#34;&gt;&amp;#39;1412012477.02665&amp;#39;&lt;/span&gt;, &lt;span class=&#34;s1&#34;&gt;&amp;#39;Content-Type&amp;#39;&lt;/span&gt;: &lt;span class=&#34;s1&#34;&gt;&amp;#39;application/octet-stream&amp;#39;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;As you can see, the user data gets stored as “Object-Meta-My-Meta-1” with value “orange”, along with other set of metadata defined by swift for each object.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Label your devices, luke!</title>
+      <link>http://keshavab.github.io/2014/09/04/label_your_device_luke</link>
+      <pubDate>Thu, 04 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://keshavab.github.io/2014/09/04/label_your_device_luke</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;http://keshavab.github.io/assets/storage-label.jpg&#34; alt=&#34;label&#34; /&gt;
+A swift ring consists of node ip addresses and the devices(disks) attached to it. Its extremely important to have a track of these devices that need to be mounted. This is because on a system reboot, the devices may come up in different order. e.g. a /dev/sdb on current boot may be presented as /dev/sdc on next reboot. This would lead to chaotic behavior since a ring consists of storage-node:disk tuple and if a disk changes, all the partitions that would land up on the disk are totally different. Hence labeling the disk drive is quintessential for the drive to be presented same way across system reboots.
+Labeling is done by specifying the -L option while creating xfs file system.
+Now, we will walk through on how to format and label a given disk.
+Lets assume the disk you have is /dev/sdb.&lt;/p&gt;
+
+&lt;p&gt;1.Partition the whole device as a single partition. One can use either mkfs or parted.
+(Note: there are some problems creating file system without partitions)&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;c&#34;&gt;#parted -s /dev/sdb mklabel gpt 1&lt;/span&gt;
+&lt;span class=&#34;c&#34;&gt;#parted -s /dev/sdb mkpart data xfs 0% 100% 1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;2.Create xfs file system on partition using label
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;c&#34;&gt;#mkfs.xfs -f -L d1 /dev/sdb1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;3.Verify the label on disk
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;c&#34;&gt;# xfs_admin -lu /dev/sdb1&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;label&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;d1&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;nv&#34;&gt;UUID&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; a7b22152-5418-4222-84c0-408018fe1150
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+The UUID on your system may vary from this.&lt;/p&gt;
+
+&lt;p&gt;4.Mount the created file system
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;c&#34;&gt;#mount -t xfs -o noatime,nodiratime,logbufs=8 -L d1 /srv/node/d1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;5.Add the mount commands to a script and &lt;a href=&#34;http://www.debian-administration.org/article/28/Making_scripts_run_at_boot_time_with_Debian&#34;&gt;make the script run at boot time&lt;/a&gt;. Save the following contents to a file – mount_disks.sh.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;#mount -t xfs -o noatime,nodiratime,logbufs=8 -L d1 /srv/node/d1
+#mount -t xfs -o noatime,nodiratime,logbufs=8 -L d2 /srv/node/d2
+#mount -t xfs -o noatime,nodiratime,logbufs=8 -L d3 /srv/node/d3
+#mount -t xfs -o noatime,nodiratime,logbufs=8 -L d4 /srv/node/d4
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;Run mount_disks.sh during boot time.
+Once, this is done, the disk is mounted using label d1 and even across reboots.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Swift 2.1.0 released</title>
+      <link>http://keshavab.github.io/2014/09/02/swift_210_released</link>
+      <pubDate>Tue, 02 Sep 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://keshavab.github.io/2014/09/02/swift_210_released</guid>
+      <description>&lt;p&gt;Swift 2.1.0 is released.  Here’s the summary of features&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Improvised data placement algorithm&lt;/li&gt;
+&lt;li&gt;Updated logging and metrics&lt;/li&gt;
+&lt;li&gt;Improvised and faster object auditing&lt;/li&gt;
+&lt;li&gt;allow POST and DELETE for tempurl middleware&lt;/li&gt;
+&lt;li&gt;list_endpoints now has storage policy support&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://lists.openstack.org/pipermail/openstack-dev/2014-September/044581.html&#34;&gt;Here’s the full blog&lt;/a&gt; about it from swift PTL John Dickinson&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ring, What’s your balance ?</title>
+      <link>http://keshavab.github.io/2014/08/31/ring_whats_your_balance</link>
+      <pubDate>Sun, 31 Aug 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://keshavab.github.io/2014/08/31/ring_whats_your_balance</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;http://keshavab.github.io/assets/balance.jpg&#34; alt=&#34;balance&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In Swift, the Ring is one of the most important structure and file. It defines where the data will be stored in the cluster. It defines whole of your swift cluster. There are many properties of a ring and one such is balance.&lt;/p&gt;
+
+&lt;p&gt;So, whats the balance of a ring ?
+From the source
+&amp;gt; &amp;ldquo;The balance value is the highest percentage off the desired amount of partitions a given device
+wants. For instance, if the “worst” device wants (based on its weight relative to the sum of all the devices’ weights) 123 partitions and it has 124 partitions, the balance value would be 0.83 (1 extra / 123 wanted * 100 for percentage).&amp;rdquo;&lt;/p&gt;
+
+&lt;p&gt;So, balance is the &lt;strong&gt;maximum percentage deviation&lt;/strong&gt; from the desired number of partitions a device wants.&lt;/p&gt;
+
+&lt;p&gt;Lets consider an example swift cluster with 3 nodes and 10 disks on each node with equal weight, with partition power of 10 and 3 replicas.&lt;/p&gt;
+
+&lt;p&gt;The total number of partitions = 2^10 * 3 = 3072 partitions.&lt;/p&gt;
+
+&lt;p&gt;ideally, these 3072 partitions should be equally distributed across 30 nodes which would be &lt;sup&gt;3072&lt;/sup&gt;&amp;frasl;&lt;sub&gt;30&lt;/sub&gt; =  102.4
+So, the desired partition each device wants is &lt;strong&gt;102.4&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now, lets inspect the object ring using swift-ring-builder.&lt;/p&gt;
+
+&lt;p&gt;Lets examine an example ring. To create and view contents of a ring, swift-ring-builder command is used.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;swift-ring-builder object.builder
+object.builder, build version 30
+&lt;span class=&#34;m&#34;&gt;1024&lt;/span&gt; partitions, 3.000000 replicas, &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; regions, &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; zones, &lt;span class=&#34;m&#34;&gt;30&lt;/span&gt; devices, 0.59 balance
+The minimum number of hours before a partition can be reassigned is 1
+Devices:    id  region  zone      ip address  port  replication ip  replication port      name weight partitions balance meta
+             &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.1  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.1              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb1 100.00        &lt;span class=&#34;m&#34;&gt;102&lt;/span&gt;   -0.39
+             &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.1  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.1              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb2 100.00        &lt;span class=&#34;m&#34;&gt;103&lt;/span&gt;    0.59
+             &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.1  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.1              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb3 100.00        &lt;span class=&#34;m&#34;&gt;102&lt;/span&gt;   -0.39
+             &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.1  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.1              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb4 100.00        &lt;span class=&#34;m&#34;&gt;102&lt;/span&gt;   -0.39
+             &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.1  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.1              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb5 100.00        &lt;span class=&#34;m&#34;&gt;102&lt;/span&gt;   -0.39
+             &lt;span class=&#34;m&#34;&gt;5&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.1  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.1              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb6 100.00        &lt;span class=&#34;m&#34;&gt;103&lt;/span&gt;    0.59
+             &lt;span class=&#34;m&#34;&gt;6&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.1  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.1              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb7 100.00        &lt;span class=&#34;m&#34;&gt;103&lt;/span&gt;    0.59
+             &lt;span class=&#34;m&#34;&gt;7&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.1  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.1              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb8 100.00        &lt;span class=&#34;m&#34;&gt;103&lt;/span&gt;    0.59
+             &lt;span class=&#34;m&#34;&gt;8&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.1  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.1              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb9 100.00        &lt;span class=&#34;m&#34;&gt;102&lt;/span&gt;   -0.39
+             &lt;span class=&#34;m&#34;&gt;9&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.1  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.1              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;     sdb10 100.00        &lt;span class=&#34;m&#34;&gt;102&lt;/span&gt;   -0.39
+            &lt;span class=&#34;m&#34;&gt;10&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.2  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.2              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb1 100.00        &lt;span class=&#34;m&#34;&gt;102&lt;/span&gt;   -0.39
+            &lt;span class=&#34;m&#34;&gt;11&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.2  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.2              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb2 100.00        &lt;span class=&#34;m&#34;&gt;102&lt;/span&gt;   -0.39
+            &lt;span class=&#34;m&#34;&gt;12&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.2  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.2              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb3 100.00        &lt;span class=&#34;m&#34;&gt;103&lt;/span&gt;    0.59
+            &lt;span class=&#34;m&#34;&gt;13&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.2  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.2              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb4 100.00        &lt;span class=&#34;m&#34;&gt;103&lt;/span&gt;    0.59
+            &lt;span class=&#34;m&#34;&gt;14&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.2  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.2              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb5 100.00        &lt;span class=&#34;m&#34;&gt;102&lt;/span&gt;   -0.39
+            &lt;span class=&#34;m&#34;&gt;15&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.2  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.2              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb6 100.00        &lt;span class=&#34;m&#34;&gt;103&lt;/span&gt;    0.59
+            &lt;span class=&#34;m&#34;&gt;16&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.2  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.2              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb7 100.00        &lt;span class=&#34;m&#34;&gt;102&lt;/span&gt;   -0.39
+            &lt;span class=&#34;m&#34;&gt;17&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.2  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.2              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb8 100.00        &lt;span class=&#34;m&#34;&gt;102&lt;/span&gt;   -0.39
+            &lt;span class=&#34;m&#34;&gt;18&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.2  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.2              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb9 100.00        &lt;span class=&#34;m&#34;&gt;102&lt;/span&gt;   -0.39
+            &lt;span class=&#34;m&#34;&gt;19&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.2  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.2              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;     sdb10 100.00        &lt;span class=&#34;m&#34;&gt;103&lt;/span&gt;    0.59
+            &lt;span class=&#34;m&#34;&gt;20&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.3  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.3              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb1 100.00        &lt;span class=&#34;m&#34;&gt;102&lt;/span&gt;   -0.39
+            &lt;span class=&#34;m&#34;&gt;21&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.3  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.3              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb2 100.00        &lt;span class=&#34;m&#34;&gt;103&lt;/span&gt;    0.59
+            &lt;span class=&#34;m&#34;&gt;22&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.3  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.3              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb3 100.00        &lt;span class=&#34;m&#34;&gt;103&lt;/span&gt;    0.59
+            &lt;span class=&#34;m&#34;&gt;23&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.3  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.3              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb4 100.00        &lt;span class=&#34;m&#34;&gt;103&lt;/span&gt;    0.59
+            &lt;span class=&#34;m&#34;&gt;24&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.3  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.3              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb5 100.00        &lt;span class=&#34;m&#34;&gt;102&lt;/span&gt;   -0.39
+            &lt;span class=&#34;m&#34;&gt;25&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.3  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.3              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb6 100.00        &lt;span class=&#34;m&#34;&gt;103&lt;/span&gt;    0.59
+            &lt;span class=&#34;m&#34;&gt;26&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.3  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.3              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb7 100.00        &lt;span class=&#34;m&#34;&gt;102&lt;/span&gt;   -0.39
+            &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.3  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.3              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb8 100.00        &lt;span class=&#34;m&#34;&gt;102&lt;/span&gt;   -0.39
+            &lt;span class=&#34;m&#34;&gt;28&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.3  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.3              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;      sdb9 100.00        &lt;span class=&#34;m&#34;&gt;102&lt;/span&gt;   -0.39
+            &lt;span class=&#34;m&#34;&gt;29&lt;/span&gt;       &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;        10.0.0.3  &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;        10.0.0.3              &lt;span class=&#34;m&#34;&gt;6000&lt;/span&gt;     sdb10 100.00        &lt;span class=&#34;m&#34;&gt;102&lt;/span&gt;   -0.39
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Lets consider device with id 0. The number of partitions on it is 102. The desired number of partitions is 102.4. So, it’s ‘off’ by 0.4 on negative side. Hence balance of this device is
+0.&lt;sup&gt;4&lt;/sup&gt;&amp;frasl;&lt;sub&gt;102&lt;/sub&gt;.4 * 100 = 0.39. This means this device has 0.39% lesser number of partitions than the total desired partitions.&lt;/p&gt;
+
+&lt;p&gt;Similarly, the balance is calculated for each of the device in the ring, in this case 30 devices.&lt;/p&gt;
+
+&lt;p&gt;The balance of the ring is the highest modulo value of the balance of a device in the list of devices present in the ring. In this case, that value is 0.59 present in devices with id 1, 5, 6, 7 …23, 25.&lt;/p&gt;
+
+&lt;p&gt;With this, for balance to be 0(the ideal world), the total number of partitions should be evenly divisible by total number of devices in the ring.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>TP-Link MR3020 and ZTE MF 825A - Making it work</title>
+      <link>http://keshavab.github.io/2014/03/07/tplink_3020_mf825a</link>
+      <pubDate>Fri, 07 Mar 2014 00:00:00 +0000</pubDate>
+      
+      <guid>http://keshavab.github.io/2014/03/07/tplink_3020_mf825a</guid>
+      <description>&lt;p&gt;You have got ZTE MF 825A ( 4G dongle, typically in india with airtel)
+and have bought TP-Link MR3020 to enjoy 4g speed over wifi. and oops.. they are not working out of the box. You are not alone. There are lotsa people including me facing same problem. Below are things you can do to make them work.&lt;/p&gt;
+
+&lt;p&gt;Problem:
+March 07 2014.
+As on this date, TP-Link MR3020 ships by default with firmware revision with 9/29/2013. On connecting ZTE MF 825A with this, it did not work. i.e modem status says identified. but connection to 4g network never succeeds. Hence out of the Box, MF825A doesnot work.
+The latest version on website is the same version - 9/29/2013. That doesnot serve no good.&lt;/p&gt;
+
+&lt;p&gt;Solution:
+In comes the saviour - &lt;a href=&#34;http://en.wikipedia.org/wiki/OpenWrt&#34;&gt;Openwrt&lt;/a&gt;.
+OpenWrt is described as a Linux distribution for embedded devices.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Browse to &lt;a href=&#34;http://ofmodemsandmen.com/downloads.html&#34;&gt;http://ofmodemsandmen.com/downloads.html&lt;/a&gt;. This provides firmware out of box based on openwrt.&lt;/li&gt;
+&lt;li&gt;Choose the huntsman version for 3020 which is the stable version. download this firmware bin file.&lt;/li&gt;
+&lt;li&gt;login to router admin url. 192.168.0.254.  click on firmware section. click on upgrade.&lt;/li&gt;
+&lt;li&gt;choose the bin file downloaded earlier and click on upgrade.&lt;/li&gt;
+&lt;li&gt;once upgrade is clicked, the router applies the above firmware and reboots. on reboot you would be welcomed with a new screen which are screens of openwrt and not of tplink. This may void the warranty and do it at your own risk.&lt;/li&gt;
+&lt;li&gt;Now login to same admin url. - 192.168.0.254 or 192.168.1.1 now click on modem-&amp;gt;connection section.&lt;/li&gt;
+&lt;li&gt;Enter these values -
+APN: airtelgprs.com
+pin: *99#&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Reboot the router and start enjoying high speed 4g over wireless.
+Enjoy !!!!&lt;/p&gt;
+
+&lt;p&gt;P.S: Read the instructions once on openwrt before flashing the firmware.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Airtel 4G LTE card &#43; Xubuntu - Making it work</title>
+      <link>http://keshavab.github.io/2013/10/20/airtel_lte_xubuntu</link>
+      <pubDate>Sun, 20 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://keshavab.github.io/2013/10/20/airtel_lte_xubuntu</guid>
+      <description>&lt;p&gt;I have Xubuntu 12.04 LTS (64-bit) and got a new Airtel 4G LTE usb Card. ( ZTE MF 825a).
+Airtel has provided linux drivers and an install script in a folder called &amp;lsquo;Linux&amp;rsquo;&lt;/p&gt;
+
+&lt;p&gt;Copy the contents onto home dir and extract the contents. It would look something like this
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;keshava Linux&lt;span class=&#34;nv&#34;&gt;$pwd&lt;/span&gt;
+/home/keshava/Linux
+keshava Linux&lt;span class=&#34;nv&#34;&gt;$ls&lt;/span&gt;
+Airtel_4G_Internet.tar.gz  install.sh  PCL_AIRTEL.tar.gz  zr
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;But, when you run
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;sudo ./install.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The program fails to run. Now you start pulling your hair !!
+Now, you can stop that since i&amp;rsquo;ve already done it and below is solution.
+This is because Airtel by default ships 32 bit libraries and if you are on a 64 bit system, 32-bit libraries would not be installed by default.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt; keshava Linux&lt;span class=&#34;nv&#34;&gt;$file&lt;/span&gt; /opt/Airtel_4G_Internet/Airtel&lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;4G&lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;Internet
+
+/opt/Airtel_4G_Internet/Airtel 4G Internet: setuid ELF 32-bit LSB executable, Intel 80386, version &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;SYSV&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;, dynamically linked &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;uses shared libs&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;, &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; GNU/Linux 2.6.15, BuildID&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;sha1&lt;span class=&#34;o&#34;&gt;]=&lt;/span&gt;0xf4d3b440e68b7292416cc47c2f09c63ed74c7e6e, not stripped
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;So, now install 32-bit libraries.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;sudo apt-get install ia32-libs
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;This would install 32 bit libraries, and the program , when now run from main menu would run - smooth as butter.&lt;/p&gt;
+
+&lt;p&gt;Voila !!!&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Code by James Gosling took good three years to mature</title>
+      <link>http://keshavab.github.io/2012/05/27/code_james_gosling</link>
+      <pubDate>Sun, 27 May 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://keshavab.github.io/2012/05/27/code_james_gosling</guid>
+      <description>&lt;p&gt;I was wandering into basics of algorithms and found this &lt;a href=&#34;http://www.cs.ubc.ca/~harrison/Java/sorting-demo.html&#34;&gt;interesting page&lt;/a&gt; and &lt;a href=&#34;http://www.cs.ubc.ca/~harrison/Java/QSortAlgorithm.java.html&#34;&gt;this&lt;/a&gt; article. Probably, this was written in the earliest days of Java, when the authors of Java were trying to just prove that code can be written in Java , and they took algorithms as their test bed. Typical for anybody to do so.&lt;/p&gt;
+
+&lt;p&gt;That&amp;rsquo;s not a surprise. What caught me by surprise was the comments section. I&amp;rsquo;ll just reproduce the comments section.( leaving out license :) )
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span class=&#34;cm&#34;&gt;/**&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; * A quick sort demonstration algorithm&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; * SortAlgorithm.java, Thu Oct 27 10:32:35 1994&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; *&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; * @author James Gosling&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; * @version     1.6f, 31 Jan 1995&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; */&lt;/span&gt;
+
+&lt;span class=&#34;cm&#34;&gt;/**&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; * 19 Feb 1996: Fixed to avoid infinite loop discoved by Paul Haeberli.&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; *              Misbehaviour expressed when the pivot element was not unique.&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; *              -Jason Harrison&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; *&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; * 21 Jun 1996: Modified code based on comments from Paul Haeberli, and&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; *              Peter Schweizer (Peter.Schweizer@mni.fh-giessen.de).&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; *              Used Daeron Meyer&amp;#39;s (daeron@geom.umn.edu) code for the&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; *              new pivoting code. - Jason Harrison&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; *&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; * 09 Jan 1998: Another set of bug fixes by Thomas Everth (everth@wave.co.nz)&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; *              and John Brzustowski (jbrzusto@gpu.srv.ualberta.ca).&lt;/span&gt;
+&lt;span class=&#34;cm&#34;&gt; */&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;So, What&amp;rsquo;s the observation ?
+It took good &lt;strong&gt;&lt;em&gt;3 YEARS&lt;/em&gt;&lt;/strong&gt;  for this 80 lines of antediluvian Quick sort code to mature with bug fixes resolved.&lt;/p&gt;
+
+&lt;p&gt;An 80 odd line code written by creator of Java taking  &lt;strong&gt;1000&lt;/strong&gt; odd days  to get fixed !.
+Today, it convinced me on how the Enterprise software support industry is thriving so long for so many years. Code written by one of the finest taking so long to mature and imagine the code written by noobs, rookies, other ordinary folks that has creeped in to trillions of lines of software universe.
+Millions of lines of code written by rookies would take light years to get fixed i believe. Probably at complexity greater than O(n!).&lt;/p&gt;
+
+&lt;p&gt;No Wonder &lt;a href=&#34;https://github.com/torvalds/linux/pull/17#issuecomment-5654674&#34;&gt;Linus doesn&amp;rsquo;t do github pull requests.&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

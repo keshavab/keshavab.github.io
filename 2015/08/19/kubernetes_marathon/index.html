@@ -1,0 +1,281 @@
+    <!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Keshava Bharadwaj">
+		<meta name="description" content="Home of Keshava Bharadwaj">
+		<meta name="generator" content="Hugo 0.15" />
+		<title>Kuberetes vs Mararthon - how they fare &middot; keshavab.io</title>
+		<link rel="shortcut icon" href="http://keshavab.github.io/images/favicon.ico">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/style.css">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/github.css">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/monosocialiconsfont.css">
+		
+		<link href="http://keshavab.github.io/index.xml" rel="alternate" type="application/rss+xml" title="keshavab.io" />
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+  
+    <a href='http://keshavab.github.io/'> Home</a>
+
+    <a href='http://keshavab.github.io/about'>About</a>
+
+    <a href="http://keshavab.github.io/index.xml">Subscribe</a>
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>Kuberetes vs Mararthon - how they fare</h1>
+                    <h2 class="headline">August 19, 2015</h2>
+                </header>
+                <section id="post-body">
+                    
+
+<p><a href="http://kubernetes.io/">Kubernetes(k8s)</a> is trying to evolve itself as the defacto standard for container
+management. Backed by google it has all the odds to succeed. <a href="https://mesosphere.github.io/marathon/">Marathon</a> is another
+such application which can be used on top of mesos for container management and has been around for a while. In this post we
+will try to see how they fare against each other.</p>
+
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Kubernetes(K8s)</th>
+<th>Marathon</th>
+<th>K8s +&rsquo;s</th>
+<th>Marathon +&rsquo;s</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Ability to run Docker and other container types</td>
+<td>no, only docker as on date</td>
+<td>yes</td>
+<td>-1</td>
+<td>+1</td>
+</tr>
+
+<tr>
+<td>Ability to run non container applications</td>
+<td>no, only docker containers</td>
+<td>yes. can run non-containerized applications too</td>
+<td>-1</td>
+<td>+1</td>
+</tr>
+
+<tr>
+<td>Working with Mesos</td>
+<td>yes</td>
+<td>yes</td>
+<td>+1</td>
+<td>+1</td>
+</tr>
+
+<tr>
+<td>Working with other underlying infra</td>
+<td>yes, not bound to mesos. Can work independently and also with other platforms like <a href="https://www.openstack.org/">OpenStack</a></td>
+<td>no, strongly tied to mesos</td>
+<td>+1</td>
+<td>-1</td>
+</tr>
+
+<tr>
+<td>Run containers with automatic recovery of failed containers</td>
+<td>yes</td>
+<td>yes</td>
+<td>+1</td>
+<td>+1</td>
+</tr>
+
+<tr>
+<td>Ability to run co-scheduled, co-located containers</td>
+<td>yes</td>
+<td>no</td>
+<td>+1</td>
+<td>-1</td>
+</tr>
+
+<tr>
+<td>Ability to launch sidekick containers</td>
+<td>yes</td>
+<td>no</td>
+<td>+1</td>
+<td>-1</td>
+</tr>
+
+<tr>
+<td>REST API</td>
+<td>yes</td>
+<td>yes</td>
+<td>+1</td>
+<td>+1</td>
+</tr>
+
+<tr>
+<td>UI</td>
+<td>no</td>
+<td>yes</td>
+<td>-1</td>
+<td>+1</td>
+</tr>
+
+<tr>
+<td>Batteries included rolling updates and upgrades</td>
+<td>yes</td>
+<td>sort of. was introduced in later versions</td>
+<td>+1</td>
+<td>+1</td>
+</tr>
+
+<tr>
+<td>Service discovery, load balancing, inbuilt</td>
+<td>yes</td>
+<td>no. need to integrate with consul, haproxy</td>
+<td>+1</td>
+<td>-1</td>
+</tr>
+</tbody>
+</table>
+
+<p><em>* as on 19/08/15</em></p>
+
+<h3 id="running-k8s-on-top-of-mesos:2222a28e059760a7c4fb8913760d6b1f">Running K8s on top of Mesos</h3>
+
+<p>With the Mesos integration layer, K8s acts as a Mesos framework, scheduling pods as Mesos tasks. K8s-Mesos integrates the K8s scheduler API with the Mesos scheduler API, matching up requested pods to resource offers. Each scheduled pod is also a Mesos task. From a user’s perspective, the integration is transparent. Mesos is the “gold standard” for large-scale production clusters running containers. This integration would give best container management experience with best in class Mesos resource scheduler.</p>
+
+<h3 id="so-kubernetes-or-marathon:2222a28e059760a7c4fb8913760d6b1f">So, Kubernetes or Marathon?</h3>
+
+<p>If you are <strong>only</strong> into containers, then K8s may be the way to go. Because</p>
+
+<ul>
+<li>K8s was built ground up with the sole aim of deploying, orchestrating and maintaining containers drawing on over ten years of experience running containers at massive scale @ Google.</li>
+<li>Personally, i feel being backed by google and now collaborating with <a href="https://mesosphere.com/">Mesosphere</a>, it has more muscle power and mileage to outlast marathon.</li>
+<li>The recently formed <a href="https://cncf.io/">Cloud Native Computing Foundation</a>, where both Google and Mesosphere are part of have made K8s as the seed technology along with Mesos. This vindicates the point mentioned above.</li>
+</ul>
+
+                </section>
+            </article>
+            <footer id="post-meta" class="clearfix">
+                <a href="https://twitter.com/keshavab">
+                        <img class="avatar" src="http://keshavab.github.io/images/avatar.png">
+                        <div>
+                            
+                            <span></span>
+                        </div>
+                    </a>
+                <section id="sharing">
+                    
+<a class="twitter" href="https://twitter.com/intent/tweet?text=Kuberetes%20vs%20Mararthon%20-%20how%20they%20fare - http%3a%2f%2fkeshavab.github.io%2f2015%2f08%2f19%2fkubernetes_marathon by @keshavab"><span class="icon-twitter"> Tweet</span></a>
+
+
+
+
+                </section>
+            </footer>
+
+            <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'keshavabharadwaj';
+    var disqus_identifier = 'http:\/\/keshavab.github.io\/2015\/08\/19\/kubernetes_marathon';
+    var disqus_title = 'Kuberetes vs Mararthon - how they fare';
+    var disqus_url = 'http:\/\/keshavab.github.io\/2015\/08\/19\/kubernetes_marathon';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+            <ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+    
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/03/31/closure_golang">Closures in golang<aside class="dates">Mar 31</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/03/15/hugo_theme_not_rendered">Hugo theme not rendered correctly<aside class="dates">Mar 15</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/02/29/s3-compatible-storage-systems">S3 compatible storage systems<aside class="dates">Feb 29</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2015/09/01/container_ecosystem">Container ecosystem - applications, tools and technologies.<aside class="dates">Sep 1</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2015/08/21/ansible_include_with_items">Ansible - include &#43; with_items back in 2.0<aside class="dates">Aug 21</aside></a>
+        </li>
+        
+   
+</ul>
+
+            <footer id="footer">
+    
+        
+<div id="social">
+    
+    <a class="symbol" href="http://www.github.com/keshavab">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="http://www.twitter.com/keshavab">
+        circletwitterbird
+    </a>
+    
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2016 Keshava Bharadwaj
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://keshavab.github.io/js/main.js"></script>
+<script src="http://keshavab.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-66360859-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+    </body>
+</html>

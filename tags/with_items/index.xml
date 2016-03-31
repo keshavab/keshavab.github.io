@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>With_items on keshavab.io</title>
+    <link>http://keshavab.github.io/tags/with_items/</link>
+    <description>Recent content in With_items on keshavab.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 21 Aug 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://keshavab.github.io/tags/with_items/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Ansible - include &#43; with_items back in 2.0</title>
+      <link>http://keshavab.github.io/2015/08/21/ansible_include_with_items</link>
+      <pubDate>Fri, 21 Aug 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://keshavab.github.io/2015/08/21/ansible_include_with_items</guid>
+      <description>&lt;p&gt;One of the widely used(abused) feature of &lt;a href=&#34;https://github.com/ansible/ansible&#34;&gt;Ansible&lt;/a&gt; which was taken back in 1.6 is back in 2.0.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;include:&lt;/strong&gt; statement to include a file with variable name&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;include:&lt;/strong&gt; statement with &lt;em&gt;with_items&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Prior to 2.0, any of these operations would always result in the following error:
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;nn&#34;&gt;---&lt;/span&gt;
+&lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;include&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;{{&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;my_var&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;}}.yml&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;ERROR: file not found: /path/to/ansible/provision/&lt;span class=&#34;o&#34;&gt;{{&lt;/span&gt;my_var&lt;span class=&#34;o&#34;&gt;}}&lt;/span&gt;.yml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;nn&#34;&gt;---&lt;/span&gt;
+&lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;include&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;{{&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;item&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;}}&amp;quot;&lt;/span&gt;
+  &lt;span class=&#34;l-Scalar-Plain&#34;&gt;with_items&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt;
+  &lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;{{&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;my_var&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;}}.yml&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;ERROR: &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;DEPRECATED&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: include + with_items is a removed deprecated feature. Please update your playbooks.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;With 2.0(&lt;a href=&#34;http://docs.ansible.com/ansible/intro_installation.html#running-from-source&#34;&gt;currently devel branch&lt;/a&gt;), these are possible now:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;include:&lt;/strong&gt; statement to include a file with variable name
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;nn&#34;&gt;---&lt;/span&gt;
+&lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;hosts&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;all&lt;/span&gt;
+  &lt;span class=&#34;l-Scalar-Plain&#34;&gt;tasks&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt;
+  &lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;include&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;{{&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;my_var&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt; &lt;/span&gt;&lt;span class=&#34;s&#34;&gt;}}.yml&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;include:&lt;/strong&gt; statement with &lt;em&gt;with_items&lt;/em&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;nn&#34;&gt;---&lt;/span&gt;
+&lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;hosts&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;all&lt;/span&gt;
+  &lt;span class=&#34;l-Scalar-Plain&#34;&gt;tasks&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt;
+  &lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;include&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;play.yml {{ item }}&lt;/span&gt;
+  &lt;span class=&#34;l-Scalar-Plain&#34;&gt;with_items&lt;/span&gt;&lt;span class=&#34;p-Indicator&#34;&gt;:&lt;/span&gt;
+  &lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;var_1&lt;/span&gt;
+  &lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;var_2&lt;/span&gt;
+  &lt;span class=&#34;p-Indicator&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;l-Scalar-Plain&#34;&gt;var_3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;This would help in dynamically including a file based on a variable or a fact. This would also help to iterate over the same
+play/file with different values.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

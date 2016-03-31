@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Marathon on keshavab.io</title>
+    <link>http://keshavab.github.io/tags/marathon/</link>
+    <description>Recent content in Marathon on keshavab.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 01 Sep 2015 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://keshavab.github.io/tags/marathon/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Container ecosystem - applications, tools and technologies.</title>
+      <link>http://keshavab.github.io/2015/09/01/container_ecosystem</link>
+      <pubDate>Tue, 01 Sep 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://keshavab.github.io/2015/09/01/container_ecosystem</guid>
+      <description>&lt;p&gt;Container ecosystem is evolving and bringing along with it a hell lot of other technologies
+and tools in its ecosystem. This post aims to list out all such various tools and technologies
+that are in creating platforms using containers.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Applications, tools and technologies&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/docker.png&#34; alt=&#34;docker logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://www.docker.com/&#34;&gt;Docker&lt;/a&gt;. The first citizen of container ecosystem. The &lt;em&gt;de-facto&lt;/em&gt; standard for containers. If it&amp;rsquo;s a container, it&amp;rsquo;s most likely docker.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/coreos.jpeg&#34; alt=&#34;coreos logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://coreos.com/&#34;&gt;Coreos&lt;/a&gt;. The operating system which supposedly runs docker(containers) the best.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/mesos.png&#34; alt=&#34;mesos logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;http://mesos.apache.org/&#34;&gt;Apache Mesos&lt;/a&gt;. The gold standard for data center resource scheduling.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/marathon.jpeg&#34; alt=&#34;marathon logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://mesosphere.github.io/marathon/&#34;&gt;Marathon&lt;/a&gt;. A cluster-wide init and control system for services in cgroups or Docker containers. Runs on top of &lt;a href=&#34;http://mesos.apache.org/&#34;&gt;Apache Mesos&lt;/a&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/kubernetes.jpeg&#34; alt=&#34;kubernetes logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;http://kubernetes.io/&#34;&gt;Kubernetes&lt;/a&gt;. An orchestration system for Docker containers. Distilled with years of experience from &lt;em&gt;Google&lt;/em&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/rocket.jpeg&#34; alt=&#34;rocket logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/coreos/rkt&#34;&gt;Rocket&lt;/a&gt;. Container runtime from coreos.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/etcd.jpeg&#34; alt=&#34;etcd logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://coreos.com/etcd/&#34;&gt;etcd&lt;/a&gt;. A highly-available key value store for shared configuration and service discovery.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/consul.jpeg&#34; alt=&#34;consul logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://www.consul.io/&#34;&gt;consul&lt;/a&gt;. Tool for discovering and configuring services in your infrastructure. Provides service discovery, health check, key/value store and supports multi datacenter ground up.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/flocker.png&#34; alt=&#34;flocker logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://clusterhq.com/flocker/introduction/&#34;&gt;Flocker&lt;/a&gt;. Data volume manager for your Dockerized applications. Unlike a Docker data volume which is tied to a single server, a Flocker data volume, called a dataset, is portable and can be used with any container in your cluster.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/calico.png&#34; alt=&#34;calico logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;http://www.projectcalico.org/&#34;&gt;Calico&lt;/a&gt;. An open source solution for virtual networking&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/weave.png&#34; alt=&#34;weave logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;http://weave.works/&#34;&gt;Weave&lt;/a&gt;. Weave creates a virtual network that connects Docker containers deployed across multiple hosts and enables their automatic discovery.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/flannel.png&#34; alt=&#34;flannel logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/coreos/flannel&#34;&gt;Flannel&lt;/a&gt;. flannel is a virtual network that gives a subnet to each host for use with container runtimes.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;&lt;em&gt;Coreos Fleet&lt;/em&gt;&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://coreos.com/using-coreos/clustering/&#34;&gt;Fleet&lt;/a&gt;. With fleet, you can treat your CoreOS cluster as if it shared a single init system.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/dockerswarm.svg&#34; alt=&#34;swarm logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://www.docker.com/docker-swarm&#34;&gt;Docker Swarm&lt;/a&gt;. Provides native clustering capabilities to turn a group of Docker engines into a single, virtual Docker Engine&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/dockercompose.svg&#34; alt=&#34;compose logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://www.docker.com/docker-compose&#34;&gt;Docker Compose&lt;/a&gt;. Docker Compose allows you to define your multi-container application with all of its dependencies in a single file, then spin your application up in a single command.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/dockermachine.svg&#34; alt=&#34;machine logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;http://docs.docker.com/machine/&#34;&gt;Docker Machine&lt;/a&gt;. Machine lets you create Docker hosts on your computer, on cloud providers, and inside your own data center.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/kitematic.png&#34; alt=&#34;kitematic logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://kitematic.com/&#34;&gt;Kitematic&lt;/a&gt;. Kitematic is the fastest and easiest way to start using Docker on your laptop.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;img src=&#34;http://keshavab.github.io/assets/packer.png&#34; alt=&#34;packer logo&#34; /&gt;&lt;/td&gt;
+&lt;td&gt;Packer is a tool for creating machine and container images for multiple platforms from a single source configuration.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;strong&gt;p.s&lt;/strong&gt;: I&amp;rsquo;ve added the tools/technologies which i am aware of. In case you find anything missing in the list,
+drop a comment below or dm me on twitter and i would be more than happy to add them.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Kuberetes vs Mararthon - how they fare</title>
+      <link>http://keshavab.github.io/2015/08/19/kubernetes_marathon</link>
+      <pubDate>Wed, 19 Aug 2015 00:00:00 +0000</pubDate>
+      
+      <guid>http://keshavab.github.io/2015/08/19/kubernetes_marathon</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://kubernetes.io/&#34;&gt;Kubernetes(k8s)&lt;/a&gt; is trying to evolve itself as the defacto standard for container
+management. Backed by google it has all the odds to succeed. &lt;a href=&#34;https://mesosphere.github.io/marathon/&#34;&gt;Marathon&lt;/a&gt; is another
+such application which can be used on top of mesos for container management and has been around for a while. In this post we
+will try to see how they fare against each other.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Feature&lt;/th&gt;
+&lt;th&gt;Kubernetes(K8s)&lt;/th&gt;
+&lt;th&gt;Marathon&lt;/th&gt;
+&lt;th&gt;K8s +&amp;rsquo;s&lt;/th&gt;
+&lt;th&gt;Marathon +&amp;rsquo;s&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Ability to run Docker and other container types&lt;/td&gt;
+&lt;td&gt;no, only docker as on date&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;-1&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Ability to run non container applications&lt;/td&gt;
+&lt;td&gt;no, only docker containers&lt;/td&gt;
+&lt;td&gt;yes. can run non-containerized applications too&lt;/td&gt;
+&lt;td&gt;-1&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Working with Mesos&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Working with other underlying infra&lt;/td&gt;
+&lt;td&gt;yes, not bound to mesos. Can work independently and also with other platforms like &lt;a href=&#34;https://www.openstack.org/&#34;&gt;OpenStack&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;no, strongly tied to mesos&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;td&gt;-1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Run containers with automatic recovery of failed containers&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Ability to run co-scheduled, co-located containers&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;no&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;td&gt;-1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Ability to launch sidekick containers&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;no&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;td&gt;-1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;REST API&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;UI&lt;/td&gt;
+&lt;td&gt;no&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;-1&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Batteries included rolling updates and upgrades&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;sort of. was introduced in later versions&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Service discovery, load balancing, inbuilt&lt;/td&gt;
+&lt;td&gt;yes&lt;/td&gt;
+&lt;td&gt;no. need to integrate with consul, haproxy&lt;/td&gt;
+&lt;td&gt;+1&lt;/td&gt;
+&lt;td&gt;-1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;em&gt;* as on 19/08/15&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;running-k8s-on-top-of-mesos:2222a28e059760a7c4fb8913760d6b1f&#34;&gt;Running K8s on top of Mesos&lt;/h3&gt;
+
+&lt;p&gt;With the Mesos integration layer, K8s acts as a Mesos framework, scheduling pods as Mesos tasks. K8s-Mesos integrates the K8s scheduler API with the Mesos scheduler API, matching up requested pods to resource offers. Each scheduled pod is also a Mesos task. From a user’s perspective, the integration is transparent. Mesos is the “gold standard” for large-scale production clusters running containers. This integration would give best container management experience with best in class Mesos resource scheduler.&lt;/p&gt;
+
+&lt;h3 id=&#34;so-kubernetes-or-marathon:2222a28e059760a7c4fb8913760d6b1f&#34;&gt;So, Kubernetes or Marathon?&lt;/h3&gt;
+
+&lt;p&gt;If you are &lt;strong&gt;only&lt;/strong&gt; into containers, then K8s may be the way to go. Because&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;K8s was built ground up with the sole aim of deploying, orchestrating and maintaining containers drawing on over ten years of experience running containers at massive scale @ Google.&lt;/li&gt;
+&lt;li&gt;Personally, i feel being backed by google and now collaborating with &lt;a href=&#34;https://mesosphere.com/&#34;&gt;Mesosphere&lt;/a&gt;, it has more muscle power and mileage to outlast marathon.&lt;/li&gt;
+&lt;li&gt;The recently formed &lt;a href=&#34;https://cncf.io/&#34;&gt;Cloud Native Computing Foundation&lt;/a&gt;, where both Google and Mesosphere are part of have made K8s as the seed technology along with Mesos. This vindicates the point mentioned above.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

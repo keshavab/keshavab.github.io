@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Airtel on keshavab.io</title>
+    <link>http://keshavab.github.io/tags/airtel/</link>
+    <description>Recent content in Airtel on keshavab.io</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 20 Oct 2013 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://keshavab.github.io/tags/airtel/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Airtel 4G LTE card &#43; Xubuntu - Making it work</title>
+      <link>http://keshavab.github.io/2013/10/20/airtel_lte_xubuntu</link>
+      <pubDate>Sun, 20 Oct 2013 00:00:00 +0000</pubDate>
+      
+      <guid>http://keshavab.github.io/2013/10/20/airtel_lte_xubuntu</guid>
+      <description>&lt;p&gt;I have Xubuntu 12.04 LTS (64-bit) and got a new Airtel 4G LTE usb Card. ( ZTE MF 825a).
+Airtel has provided linux drivers and an install script in a folder called &amp;lsquo;Linux&amp;rsquo;&lt;/p&gt;
+
+&lt;p&gt;Copy the contents onto home dir and extract the contents. It would look something like this
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;keshava Linux&lt;span class=&#34;nv&#34;&gt;$pwd&lt;/span&gt;
+/home/keshava/Linux
+keshava Linux&lt;span class=&#34;nv&#34;&gt;$ls&lt;/span&gt;
+Airtel_4G_Internet.tar.gz  install.sh  PCL_AIRTEL.tar.gz  zr
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;But, when you run
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;sudo ./install.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;The program fails to run. Now you start pulling your hair !!
+Now, you can stop that since i&amp;rsquo;ve already done it and below is solution.
+This is because Airtel by default ships 32 bit libraries and if you are on a 64 bit system, 32-bit libraries would not be installed by default.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt; keshava Linux&lt;span class=&#34;nv&#34;&gt;$file&lt;/span&gt; /opt/Airtel_4G_Internet/Airtel&lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;4G&lt;span class=&#34;se&#34;&gt;\ &lt;/span&gt;Internet
+
+/opt/Airtel_4G_Internet/Airtel 4G Internet: setuid ELF 32-bit LSB executable, Intel 80386, version &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;SYSV&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;, dynamically linked &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;uses shared libs&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;, &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; GNU/Linux 2.6.15, BuildID&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;sha1&lt;span class=&#34;o&#34;&gt;]=&lt;/span&gt;0xf4d3b440e68b7292416cc47c2f09c63ed74c7e6e, not stripped
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;So, now install 32-bit libraries.
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;sudo apt-get install ia32-libs
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/p&gt;
+
+&lt;p&gt;This would install 32 bit libraries, and the program , when now run from main menu would run - smooth as butter.&lt;/p&gt;
+
+&lt;p&gt;Voila !!!&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

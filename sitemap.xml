@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>http://keshavab.github.io/</loc>
+    <lastmod>2016-03-31T15:14:47+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://keshavab.github.io/2016/03/31/closure_golang</loc>
+    <lastmod>2016-03-31T15:14:47+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://keshavab.github.io/2016/03/15/hugo_theme_not_rendered</loc>
+    <lastmod>2016-03-15T08:04:34+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://keshavab.github.io/2016/02/29/s3-compatible-storage-systems</loc>
+    <lastmod>2016-02-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://keshavab.github.io/2015/09/01/container_ecosystem</loc>
+    <lastmod>2015-09-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://keshavab.github.io/2015/08/21/ansible_include_with_items</loc>
+    <lastmod>2015-08-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://keshavab.github.io/2015/08/19/kubernetes_marathon</loc>
+    <lastmod>2015-08-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://keshavab.github.io/2015/08/17/kubernetes_vagrant_not_working</loc>
+    <lastmod>2015-08-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://keshavab.github.io/2015/07/25/kitematic_freeze</loc>
+    <lastmod>2015-07-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://keshavab.github.io/2014/09/24/swift_object_metadata</loc>
+    <lastmod>2014-09-24T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://keshavab.github.io/2014/09/04/label_your_device_luke</loc>
+    <lastmod>2014-09-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://keshavab.github.io/2014/09/02/swift_210_released</loc>
+    <lastmod>2014-09-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://keshavab.github.io/2014/08/31/ring_whats_your_balance</loc>
+    <lastmod>2014-08-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://keshavab.github.io/2014/03/07/tplink_3020_mf825a</loc>
+    <lastmod>2014-03-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://keshavab.github.io/2013/10/20/airtel_lte_xubuntu</loc>
+    <lastmod>2013-10-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://keshavab.github.io/2012/05/27/code_james_gosling</loc>
+    <lastmod>2012-05-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://keshavab.github.io/2012/01/19/npm_behind_firewall</loc>
+    <lastmod>2012-01-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://keshavab.github.io/2011/12/13/benchmarking_nodejs</loc>
+    <lastmod>2011-12-13T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://keshavab.github.io/2011/08/25/blogger_share_button</loc>
+    <lastmod>2011-08-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://keshavab.github.io/2011/08/25/win_to_unix_delim</loc>
+    <lastmod>2011-08-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://keshavab.github.io/about/</loc>
+    <lastmod>1970-01-01T00:00:00+00:00</lastmod>
+  </url>
+  
+</urlset>

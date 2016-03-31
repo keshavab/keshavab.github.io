@@ -1,0 +1,442 @@
+    <!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Keshava Bharadwaj">
+		<meta name="description" content="Home of Keshava Bharadwaj">
+		<meta name="generator" content="Hugo 0.15" />
+		<title>Benchmarking nodejs : comparing nodejs and tomcat &middot; keshavab.io</title>
+		<link rel="shortcut icon" href="http://keshavab.github.io/images/favicon.ico">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/style.css">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/github.css">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/monosocialiconsfont.css">
+		
+		<link href="http://keshavab.github.io/index.xml" rel="alternate" type="application/rss+xml" title="keshavab.io" />
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+  
+    <a href='http://keshavab.github.io/'> Home</a>
+
+    <a href='http://keshavab.github.io/about'>About</a>
+
+    <a href="http://keshavab.github.io/index.xml">Subscribe</a>
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>Benchmarking nodejs : comparing nodejs and tomcat</h1>
+                    <h2 class="headline">December 13, 2011</h2>
+                </header>
+                <section id="post-body">
+                    <p>I&rsquo;ve just started exploring nodejs after reading much gung-ho on net about it&rsquo;s scalability and performance.
+So, i decided to write a simple program to return a random number, one using node and one using our old friend - java servlet, just to compare.</p>
+
+<p>I am using apache bench (ab) to benchmark these servers.
+a. single request
+b. 10000 requests ( 5000 concurrent )</p>
+
+<p>Both of them perform the same operation.
+- parse the get parameter and generate a random number.
+- have some latency ( in real world for a user operation ~1s )
+- return the random number.</p>
+
+<p>Below are the programs.</p>
+
+<p>1.Node code
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">);</span>
+<span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+
+     <span class="nx">response</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;Content-Type&quot;</span><span class="o">:</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">});</span>
+     <span class="kd">var</span> <span class="nx">numInput</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Number</span><span class="p">((</span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">).</span><span class="nx">parse</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span> <span class="kc">true</span><span class="p">).</span><span class="nx">query</span><span class="p">).</span><span class="nx">number</span><span class="p">);</span>
+     <span class="kd">var</span> <span class="nx">numOutput</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Number</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="nx">numInput</span><span class="p">).</span><span class="nx">toFixed</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+     <span class="c1">// in real world, for a user operation ~1s</span>
+     <span class="nx">setTimeout</span><span class="p">(</span>
+     <span class="kd">function</span><span class="p">(){</span>
+     <span class="nx">response</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">numOutput</span><span class="p">);</span>
+     <span class="nx">response</span><span class="p">.</span><span class="nx">end</span><span class="p">();}</span>
+     <span class="p">,</span>
+     <span class="mi">1000</span><span class="p">);</span>     
+<span class="p">}).</span><span class="nx">listen</span><span class="p">(</span><span class="mi">4444</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;server starting...&quot;</span><span class="p">);</span>
+</code></pre></div>
+</p>
+
+<p>2.Java code
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kn">package</span> <span class="nn">org.kb.random</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.PrintWriter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.ServletException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.annotation.WebServlet</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServlet</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletRequest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.servlet.http.HttpServletResponse</span><span class="o">;</span>
+
+<span class="nd">@WebServlet</span><span class="o">(</span><span class="s">&quot;/RandomServlet&quot;</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RandomServlet</span> <span class="kd">extends</span> <span class="n">HttpServlet</span> <span class="o">{</span>
+ <span class="kd">public</span> <span class="nf">RandomServlet</span><span class="o">()</span> <span class="o">{</span>
+ <span class="o">}</span>
+
+ <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">doGet</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span>
+   <span class="n">HttpServletResponse</span> <span class="n">response</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ServletException</span><span class="o">,</span> <span class="n">IOException</span> <span class="o">{</span>
+  <span class="n">response</span><span class="o">.</span><span class="na">setContentType</span><span class="o">(</span><span class="s">&quot;text/plain&quot;</span><span class="o">);</span>
+  <span class="n">PrintWriter</span> <span class="n">out</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getWriter</span><span class="o">();</span>
+  <span class="k">try</span> <span class="o">{</span>
+   <span class="c1">//real world, for a user operation ~1s</span>
+   <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+  <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+   <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+  <span class="o">}</span>
+  <span class="n">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">Math</span><span class="o">.</span><span class="na">round</span><span class="o">(</span><span class="n">Math</span><span class="o">.</span><span class="na">random</span><span class="o">()</span>
+    <span class="o">*</span> <span class="n">Integer</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="s">&quot;number&quot;</span><span class="o">))));</span>
+ <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+</p>
+
+<p>3.web.xml
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="c">&lt;!--?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?--&gt;</span>
+<span class="nt">&lt;web-app</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;http://java.sun.com/xml/ns/javaee&quot;</span> <span class="na">xmlns:web=</span><span class="s">&quot;http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&quot;</span> <span class="na">xsi:schemalocation=</span><span class="s">&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;</span> <span class="na">id=</span><span class="s">&quot;WebApp_ID&quot;</span> <span class="na">version=</span><span class="s">&quot;3.0&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;display-name&gt;</span>random<span class="nt">&lt;/display-name&gt;</span>
+   <span class="nt">&lt;servlet&gt;</span>
+  <span class="nt">&lt;servlet-name&gt;</span>WelcomeServlet<span class="nt">&lt;/servlet-name&gt;</span>
+  <span class="nt">&lt;servlet-class&gt;</span>org.kb.random.RandomServlet<span class="nt">&lt;/servlet-class&gt;</span>
+ <span class="nt">&lt;/servlet&gt;</span>
+ <span class="nt">&lt;servlet-mapping&gt;</span>
+  <span class="nt">&lt;servlet-name&gt;</span>WelcomeServlet<span class="nt">&lt;/servlet-name&gt;</span>
+  <span class="nt">&lt;url-pattern&gt;</span>/*<span class="nt">&lt;/url-pattern&gt;</span>
+ <span class="nt">&lt;/servlet-mapping&gt;</span>
+<span class="nt">&lt;/web-app&gt;</span>
+</code></pre></div>
+</p>
+
+<p>Node version used : v0.6.5 Tomcat version : 7.0.22
+Node server running on 4444 , Tomcat one running on 5555
+Below are results obtained using ab.</p>
+
+<p>1.Node single request
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">C:<span class="se">\P</span>rogram Files <span class="o">(</span>x86<span class="o">)</span><span class="se">\A</span>pache Software Foundation<span class="se">\A</span>pache2.2<span class="se">\b</span>in&gt;ab  http://localhost:4444/?number<span class="o">=</span>50
+This is ApacheBench, Version 2.3 &lt;<span class="nv">$Revision</span>: <span class="m">655654</span> <span class="nv">$&gt;</span>
+Copyright <span class="m">1996</span> Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking localhost <span class="o">(</span>be patient<span class="o">)</span>.....done
+
+
+Server Software:
+Server Hostname:        localhost
+Server Port:            4444
+
+Document Path:          /?number<span class="o">=</span>50
+Document Length:        <span class="m">2</span> bytes
+
+Concurrency Level:      1
+Time taken <span class="k">for</span> tests:   1.014 seconds
+Complete requests:      1
+Failed requests:        0
+Write errors:           0
+Total transferred:      <span class="m">66</span> bytes
+HTML transferred:       <span class="m">2</span> bytes
+Requests per second:    0.99 <span class="o">[</span><span class="c">#/sec] (mean)</span>
+Time per request:       1014.102 <span class="o">[</span>ms<span class="o">]</span> <span class="o">(</span>mean<span class="o">)</span>
+Time per request:       1014.102 <span class="o">[</span>ms<span class="o">]</span> <span class="o">(</span>mean, across all concurrent requests<span class="o">)</span>
+Transfer rate:          0.06 <span class="o">[</span>Kbytes/sec<span class="o">]</span> received
+
+Connection Times <span class="o">(</span>ms<span class="o">)</span>
+              min  mean<span class="o">[</span>+/-sd<span class="o">]</span> median   max
+Connect:        <span class="m">0</span>    <span class="m">0</span>   0.0      <span class="m">0</span>       0
+Processing:  <span class="m">1012</span> <span class="m">1012</span>   0.0   <span class="m">1012</span>    1012
+Waiting:     <span class="m">1011</span> <span class="m">1011</span>   0.0   <span class="m">1011</span>    1011
+Total:       <span class="m">1012</span> <span class="m">1012</span>   0.0   <span class="m">1012</span>    1012
+</code></pre></div>
+</p>
+
+<p>2.Node 10000 requests ( 5000 concurrent)
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">C:<span class="se">\P</span>rogram Files <span class="o">(</span>x86<span class="o">)</span><span class="se">\A</span>pache Software Foundation<span class="se">\A</span>pache2.2<span class="se">\b</span>in&gt;ab -n <span class="m">10000</span> -c <span class="m">5000</span> http://localhost:4444/?number<span class="o">=</span>50
+This is ApacheBench, Version 2.3 &lt;<span class="nv">$Revision</span>: <span class="m">655654</span> <span class="nv">$&gt;</span>
+Copyright <span class="m">1996</span> Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking localhost <span class="o">(</span>be patient<span class="o">)</span>
+Completed <span class="m">1000</span> requests
+Completed <span class="m">2000</span> requests
+Completed <span class="m">3000</span> requests
+Completed <span class="m">4000</span> requests
+Completed <span class="m">5000</span> requests
+Completed <span class="m">6000</span> requests
+Completed <span class="m">7000</span> requests
+Completed <span class="m">8000</span> requests
+Completed <span class="m">9000</span> requests
+Completed <span class="m">10000</span> requests
+Finished <span class="m">10000</span> requests
+
+
+Server Software:
+Server Hostname:        localhost
+Server Port:            4444
+
+Document Path:          /?number<span class="o">=</span>50
+Document Length:        <span class="m">1</span> bytes
+
+Concurrency Level:      5000
+Time taken <span class="k">for</span> tests:   6.956 seconds
+Complete requests:      10000
+Failed requests:        8126
+   <span class="o">(</span>Connect: 0, Receive: 0, Length: 8126, Exceptions: 0<span class="o">)</span>
+Write errors:           0
+Total transferred:      <span class="m">658126</span> bytes
+HTML transferred:       <span class="m">18126</span> bytes
+Requests per second:    1437.55 <span class="o">[</span><span class="c">#/sec] (mean)</span>
+Time per request:       3478.140 <span class="o">[</span>ms<span class="o">]</span> <span class="o">(</span>mean<span class="o">)</span>
+Time per request:       0.696 <span class="o">[</span>ms<span class="o">]</span> <span class="o">(</span>mean, across all concurrent requests<span class="o">)</span>
+Transfer rate:          92.39 <span class="o">[</span>Kbytes/sec<span class="o">]</span> received
+
+Connection Times <span class="o">(</span>ms<span class="o">)</span>
+              min  mean<span class="o">[</span>+/-sd<span class="o">]</span> median   max
+Connect:        <span class="m">0</span>    <span class="m">0</span>  12.3      <span class="m">0</span>     506
+Processing:  <span class="m">1005</span> <span class="m">2329</span> 797.1   <span class="m">2408</span>    3777
+Waiting:     <span class="m">1002</span> <span class="m">1839</span> 711.9   <span class="m">1571</span>    3565
+Total:       <span class="m">1005</span> <span class="m">2329</span> 797.3   <span class="m">2409</span>    3778
+
+Percentage of the requests served within a certain <span class="nb">time</span> <span class="o">(</span>ms<span class="o">)</span>
+  50%   2409
+  66%   2876
+  75%   2944
+  80%   3138
+  90%   3351
+  95%   3708
+  98%   3751
+  99%   3764
+ 100%   <span class="m">3778</span> <span class="o">(</span>longest request<span class="o">)</span>
+</code></pre></div>
+</p>
+
+<p>3.Servlet - single instance
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">C:<span class="se">\P</span>rogram Files <span class="o">(</span>x86<span class="o">)</span><span class="se">\A</span>pache Software Foundation<span class="se">\A</span>pache2.2<span class="se">\b</span>in&gt;ab  http://localhost:5555/random/?number<span class="o">=</span>50
+This is ApacheBench, Version 2.3 &lt;<span class="nv">$Revision</span>: <span class="m">655654</span> <span class="nv">$&gt;</span>
+Copyright <span class="m">1996</span> Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking localhost <span class="o">(</span>be patient<span class="o">)</span>.....done
+
+
+Server Software:        Apache-Coyote/1.1
+Server Hostname:        localhost
+Server Port:            5555
+
+Document Path:          /random/?number<span class="o">=</span>50
+Document Length:        <span class="m">2</span> bytes
+
+Concurrency Level:      1
+Time taken <span class="k">for</span> tests:   1.002 seconds
+Complete requests:      1
+Failed requests:        0
+Write errors:           0
+Total transferred:      <span class="m">168</span> bytes
+HTML transferred:       <span class="m">2</span> bytes
+Requests per second:    1.00 <span class="o">[</span><span class="c">#/sec] (mean)</span>
+Time per request:       1002.100 <span class="o">[</span>ms<span class="o">]</span> <span class="o">(</span>mean<span class="o">)</span>
+Time per request:       1002.100 <span class="o">[</span>ms<span class="o">]</span> <span class="o">(</span>mean, across all concurrent requests<span class="o">)</span>
+Transfer rate:          0.16 <span class="o">[</span>Kbytes/sec<span class="o">]</span> received
+
+Connection Times <span class="o">(</span>ms<span class="o">)</span>
+              min  mean<span class="o">[</span>+/-sd<span class="o">]</span> median   max
+Connect:        <span class="m">0</span>    <span class="m">0</span>   0.0      <span class="m">0</span>       0
+Processing:  <span class="m">1001</span> <span class="m">1001</span>   0.0   <span class="m">1001</span>    1001
+Waiting:     <span class="m">1001</span> <span class="m">1001</span>   0.0   <span class="m">1001</span>    1001
+Total:       <span class="m">1001</span> <span class="m">1001</span>   0.0   <span class="m">1001</span>    1001
+</code></pre></div>
+</p>
+
+<p>4.Servlet 10000 requests ( 5000 concurrent)
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">C:<span class="se">\P</span>rogram Files <span class="o">(</span>x86<span class="o">)</span><span class="se">\A</span>pache Software Foundation<span class="se">\A</span>pache2.2<span class="se">\b</span>in&gt;ab -n <span class="m">10000</span> -c <span class="m">5000</span>  http://localhost:5555/random/?number<span class="o">=</span>50
+This is ApacheBench, Version 2.3 &lt;<span class="nv">$Revision</span>: <span class="m">655654</span> <span class="nv">$&gt;</span>
+Copyright <span class="m">1996</span> Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking localhost <span class="o">(</span>be patient<span class="o">)</span>
+Completed <span class="m">1000</span> requests
+Completed <span class="m">2000</span> requests
+Completed <span class="m">3000</span> requests
+Completed <span class="m">4000</span> requests
+Completed <span class="m">5000</span> requests
+Completed <span class="m">6000</span> requests
+Completed <span class="m">7000</span> requests
+Completed <span class="m">8000</span> requests
+Completed <span class="m">9000</span> requests
+Completed <span class="m">10000</span> requests
+Finished <span class="m">10000</span> requests
+
+
+Server Software:        Apache-Coyote/1.1
+Server Hostname:        localhost
+Server Port:            5555
+
+Document Path:          /random/?number<span class="o">=</span>50
+Document Length:        <span class="m">2</span> bytes
+
+Concurrency Level:      5000
+Time taken <span class="k">for</span> tests:   50.191 seconds
+Complete requests:      10000
+Failed requests:        1911
+   <span class="o">(</span>Connect: 0, Receive: 0, Length: 1911, Exceptions: 0<span class="o">)</span>
+Write errors:           0
+Total transferred:      <span class="m">1678089</span> bytes
+HTML transferred:       <span class="m">18089</span> bytes
+Requests per second:    199.24 <span class="o">[</span><span class="c">#/sec] (mean)</span>
+Time per request:       25095.390 <span class="o">[</span>ms<span class="o">]</span> <span class="o">(</span>mean<span class="o">)</span>
+Time per request:       5.019 <span class="o">[</span>ms<span class="o">]</span> <span class="o">(</span>mean, across all concurrent requests<span class="o">)</span>
+Transfer rate:          32.65 <span class="o">[</span>Kbytes/sec<span class="o">]</span> received
+
+Connection Times <span class="o">(</span>ms<span class="o">)</span>
+              min  mean<span class="o">[</span>+/-sd<span class="o">]</span> median   max
+Connect:        <span class="m">0</span>    <span class="m">0</span>   7.1      <span class="m">0</span>     502
+Processing:  <span class="m">1112</span> <span class="m">18386</span> 9622.6  <span class="m">18964</span>   46061
+Waiting:     <span class="m">1056</span> <span class="m">18353</span> 9634.4  <span class="m">18955</span>   46061
+Total:       <span class="m">1113</span> <span class="m">18387</span> 9622.4  <span class="m">18964</span>   46062
+
+Percentage of the requests served within a certain <span class="nb">time</span> <span class="o">(</span>ms<span class="o">)</span>
+  50%  18964
+  66%  22128
+  75%  24075
+  80%  24998
+  90%  30986
+  95%  36944
+  98%  40119
+  99%  42091
+ 100%  <span class="m">46062</span> <span class="o">(</span>longest request<span class="o">)</span>
+</code></pre></div>
+</p>
+
+<p>If you can see the <strong>Time per request</strong> lines , the time taken for each request may not be significant for one request, but as number of concurrent requests increase, the performance using node will increase by a huge factor.</p>
+
+<p>Awesome Nodejs !!!
+will start exploring more and ramble more !</p>
+
+                </section>
+            </article>
+            <footer id="post-meta" class="clearfix">
+                <a href="https://twitter.com/keshavab">
+                        <img class="avatar" src="http://keshavab.github.io/images/avatar.png">
+                        <div>
+                            
+                            <span></span>
+                        </div>
+                    </a>
+                <section id="sharing">
+                    
+<a class="twitter" href="https://twitter.com/intent/tweet?text=Benchmarking%20nodejs%20%3a%20comparing%20nodejs%20and%20tomcat - http%3a%2f%2fkeshavab.github.io%2f2011%2f12%2f13%2fbenchmarking_nodejs by @keshavab"><span class="icon-twitter"> Tweet</span></a>
+
+
+
+
+                </section>
+            </footer>
+
+            <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'keshavabharadwaj';
+    var disqus_identifier = 'http:\/\/keshavab.github.io\/2011\/12\/13\/benchmarking_nodejs';
+    var disqus_title = 'Benchmarking nodejs : comparing nodejs and tomcat';
+    var disqus_url = 'http:\/\/keshavab.github.io\/2011\/12\/13\/benchmarking_nodejs';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+            <ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+    
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/03/31/closure_golang">Closures in golang<aside class="dates">Mar 31</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/03/15/hugo_theme_not_rendered">Hugo theme not rendered correctly<aside class="dates">Mar 15</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/02/29/s3-compatible-storage-systems">S3 compatible storage systems<aside class="dates">Feb 29</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2015/09/01/container_ecosystem">Container ecosystem - applications, tools and technologies.<aside class="dates">Sep 1</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2015/08/21/ansible_include_with_items">Ansible - include &#43; with_items back in 2.0<aside class="dates">Aug 21</aside></a>
+        </li>
+        
+   
+</ul>
+
+            <footer id="footer">
+    
+        
+<div id="social">
+    
+    <a class="symbol" href="http://www.github.com/keshavab">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="http://www.twitter.com/keshavab">
+        circletwitterbird
+    </a>
+    
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2016 Keshava Bharadwaj
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://keshavab.github.io/js/main.js"></script>
+<script src="http://keshavab.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-66360859-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+    </body>
+</html>

@@ -1,0 +1,174 @@
+    <!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Keshava Bharadwaj">
+		<meta name="description" content="Home of Keshava Bharadwaj">
+		<meta name="generator" content="Hugo 0.15" />
+		<title>Converting windows line delimiters into unix delimiters &middot; keshavab.io</title>
+		<link rel="shortcut icon" href="http://keshavab.github.io/images/favicon.ico">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/style.css">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/github.css">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/monosocialiconsfont.css">
+		
+		<link href="http://keshavab.github.io/index.xml" rel="alternate" type="application/rss+xml" title="keshavab.io" />
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+  
+    <a href='http://keshavab.github.io/'> Home</a>
+
+    <a href='http://keshavab.github.io/about'>About</a>
+
+    <a href="http://keshavab.github.io/index.xml">Subscribe</a>
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>Converting windows line delimiters into unix delimiters</h1>
+                    <h2 class="headline">August 25, 2011</h2>
+                </header>
+                <section id="post-body">
+                    <p>The problem of working in windows and later transferring files to unix is that it will have a &ldquo;^M&rdquo; character at end of each file. This is because in Windows, lines
+end with both the line feed and carriage return ASCII characters, but Unix uses only a line feed.</p>
+
+<p>To convert them there are umpteen ways, dos2Unix is one such handy way.</p>
+
+<p>Install cygwin on windows. u&rsquo;ll get all linux &ldquo;Type&rdquo; utility commands on windows.
+(if u r already on a *nix system, most of them will already have it.)</p>
+
+<p>use &ldquo;find&rdquo; command to find list of files and run dos2Unix on each of them to correct all files.</p>
+
+<p>One problem before that. windows too has a find command and to have our find command take precedence over windows one,
+Edit your path (System Properties -&gt; Advanced -&gt; Environment Variables -&gt; System Variables -&gt; Path) and move the entry for cygwin to the front of the path.</p>
+
+<p>Then run the foll command in directory where u need to convert files.
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$find</span> . -name <span class="s2">&quot;*.java&quot;</span> -o -name <span class="s2">&quot;*.mxml&quot;</span> -o -name <span class="s2">&quot;*.xml&quot;</span> -o -name <span class="s2">&quot;*.as&quot;</span> <span class="p">|</span> xargs -I <span class="o">{}</span> dos2Unix <span class="o">{}</span>
+</code></pre></div>
+</p>
+
+                </section>
+            </article>
+            <footer id="post-meta" class="clearfix">
+                <a href="https://twitter.com/keshavab">
+                        <img class="avatar" src="http://keshavab.github.io/images/avatar.png">
+                        <div>
+                            
+                            <span></span>
+                        </div>
+                    </a>
+                <section id="sharing">
+                    
+<a class="twitter" href="https://twitter.com/intent/tweet?text=Converting%20windows%20line%20delimiters%20into%20unix%20delimiters - http%3a%2f%2fkeshavab.github.io%2f2011%2f08%2f25%2fwin_to_unix_delim by @keshavab"><span class="icon-twitter"> Tweet</span></a>
+
+
+
+
+                </section>
+            </footer>
+
+            <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'keshavabharadwaj';
+    var disqus_identifier = 'http:\/\/keshavab.github.io\/2011\/08\/25\/win_to_unix_delim';
+    var disqus_title = 'Converting windows line delimiters into unix delimiters';
+    var disqus_url = 'http:\/\/keshavab.github.io\/2011\/08\/25\/win_to_unix_delim';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+            <ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+    
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/03/31/closure_golang">Closures in golang<aside class="dates">Mar 31</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/03/15/hugo_theme_not_rendered">Hugo theme not rendered correctly<aside class="dates">Mar 15</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/02/29/s3-compatible-storage-systems">S3 compatible storage systems<aside class="dates">Feb 29</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2015/09/01/container_ecosystem">Container ecosystem - applications, tools and technologies.<aside class="dates">Sep 1</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2015/08/21/ansible_include_with_items">Ansible - include &#43; with_items back in 2.0<aside class="dates">Aug 21</aside></a>
+        </li>
+        
+   
+</ul>
+
+            <footer id="footer">
+    
+        
+<div id="social">
+    
+    <a class="symbol" href="http://www.github.com/keshavab">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="http://www.twitter.com/keshavab">
+        circletwitterbird
+    </a>
+    
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2016 Keshava Bharadwaj
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://keshavab.github.io/js/main.js"></script>
+<script src="http://keshavab.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-66360859-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+    </body>
+</html>

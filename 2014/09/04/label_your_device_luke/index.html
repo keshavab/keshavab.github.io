@@ -1,0 +1,199 @@
+    <!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Keshava Bharadwaj">
+		<meta name="description" content="Home of Keshava Bharadwaj">
+		<meta name="generator" content="Hugo 0.15" />
+		<title>Label your devices, luke! &middot; keshavab.io</title>
+		<link rel="shortcut icon" href="http://keshavab.github.io/images/favicon.ico">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/style.css">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/github.css">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/monosocialiconsfont.css">
+		
+		<link href="http://keshavab.github.io/index.xml" rel="alternate" type="application/rss+xml" title="keshavab.io" />
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+  
+    <a href='http://keshavab.github.io/'> Home</a>
+
+    <a href='http://keshavab.github.io/about'>About</a>
+
+    <a href="http://keshavab.github.io/index.xml">Subscribe</a>
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>Label your devices, luke!</h1>
+                    <h2 class="headline">September 4, 2014</h2>
+                </header>
+                <section id="post-body">
+                    <p><img src="/assets/storage-label.jpg" alt="label" />
+A swift ring consists of node ip addresses and the devices(disks) attached to it. Its extremely important to have a track of these devices that need to be mounted. This is because on a system reboot, the devices may come up in different order. e.g. a /dev/sdb on current boot may be presented as /dev/sdc on next reboot. This would lead to chaotic behavior since a ring consists of storage-node:disk tuple and if a disk changes, all the partitions that would land up on the disk are totally different. Hence labeling the disk drive is quintessential for the drive to be presented same way across system reboots.
+Labeling is done by specifying the -L option while creating xfs file system.
+Now, we will walk through on how to format and label a given disk.
+Lets assume the disk you have is /dev/sdb.</p>
+
+<p>1.Partition the whole device as a single partition. One can use either mkfs or parted.
+(Note: there are some problems creating file system without partitions)</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#parted -s /dev/sdb mklabel gpt 1</span>
+<span class="c">#parted -s /dev/sdb mkpart data xfs 0% 100% 1</span>
+</code></pre></div>
+
+
+<p>2.Create xfs file system on partition using label
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#mkfs.xfs -f -L d1 /dev/sdb1</span>
+</code></pre></div>
+</p>
+
+<p>3.Verify the label on disk
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># xfs_admin -lu /dev/sdb1</span>
+<span class="nv">label</span> <span class="o">=</span> <span class="s2">&quot;d1&quot;</span>
+<span class="nv">UUID</span> <span class="o">=</span> a7b22152-5418-4222-84c0-408018fe1150
+</code></pre></div>
+
+The UUID on your system may vary from this.</p>
+
+<p>4.Mount the created file system
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#mount -t xfs -o noatime,nodiratime,logbufs=8 -L d1 /srv/node/d1</span>
+</code></pre></div>
+</p>
+
+<p>5.Add the mount commands to a script and <a href="http://www.debian-administration.org/article/28/Making_scripts_run_at_boot_time_with_Debian">make the script run at boot time</a>. Save the following contents to a file – mount_disks.sh.
+<div class="highlight"><pre><code class="language-text" data-lang="text">#mount -t xfs -o noatime,nodiratime,logbufs=8 -L d1 /srv/node/d1
+#mount -t xfs -o noatime,nodiratime,logbufs=8 -L d2 /srv/node/d2
+#mount -t xfs -o noatime,nodiratime,logbufs=8 -L d3 /srv/node/d3
+#mount -t xfs -o noatime,nodiratime,logbufs=8 -L d4 /srv/node/d4
+</code></pre></div>
+</p>
+
+<p>Run mount_disks.sh during boot time.
+Once, this is done, the disk is mounted using label d1 and even across reboots.</p>
+
+                </section>
+            </article>
+            <footer id="post-meta" class="clearfix">
+                <a href="https://twitter.com/keshavab">
+                        <img class="avatar" src="http://keshavab.github.io/images/avatar.png">
+                        <div>
+                            
+                            <span></span>
+                        </div>
+                    </a>
+                <section id="sharing">
+                    
+<a class="twitter" href="https://twitter.com/intent/tweet?text=Label%20your%20devices%2c%20luke%21 - http%3a%2f%2fkeshavab.github.io%2f2014%2f09%2f04%2flabel_your_device_luke by @keshavab"><span class="icon-twitter"> Tweet</span></a>
+
+
+
+
+                </section>
+            </footer>
+
+            <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'keshavabharadwaj';
+    var disqus_identifier = 'http:\/\/keshavab.github.io\/2014\/09\/04\/label_your_device_luke';
+    var disqus_title = 'Label your devices, luke!';
+    var disqus_url = 'http:\/\/keshavab.github.io\/2014\/09\/04\/label_your_device_luke';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+            <ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+    
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/03/31/closure_golang">Closures in golang<aside class="dates">Mar 31</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/03/15/hugo_theme_not_rendered">Hugo theme not rendered correctly<aside class="dates">Mar 15</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/02/29/s3-compatible-storage-systems">S3 compatible storage systems<aside class="dates">Feb 29</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2015/09/01/container_ecosystem">Container ecosystem - applications, tools and technologies.<aside class="dates">Sep 1</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2015/08/21/ansible_include_with_items">Ansible - include &#43; with_items back in 2.0<aside class="dates">Aug 21</aside></a>
+        </li>
+        
+   
+</ul>
+
+            <footer id="footer">
+    
+        
+<div id="social">
+    
+    <a class="symbol" href="http://www.github.com/keshavab">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="http://www.twitter.com/keshavab">
+        circletwitterbird
+    </a>
+    
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2016 Keshava Bharadwaj
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://keshavab.github.io/js/main.js"></script>
+<script src="http://keshavab.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-66360859-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+    </body>
+</html>

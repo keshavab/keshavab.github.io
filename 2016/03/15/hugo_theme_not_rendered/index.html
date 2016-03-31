@@ -1,0 +1,186 @@
+    <!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Keshava Bharadwaj">
+		<meta name="description" content="Home of Keshava Bharadwaj">
+		<meta name="generator" content="Hugo 0.15" />
+		<title>Hugo theme not rendered correctly &middot; keshavab.io</title>
+		<link rel="shortcut icon" href="http://keshavab.github.io/images/favicon.ico">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/style.css">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/github.css">
+		<link rel="stylesheet" href="http://keshavab.github.io/css/monosocialiconsfont.css">
+		
+		<link href="http://keshavab.github.io/index.xml" rel="alternate" type="application/rss+xml" title="keshavab.io" />
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+  
+    <a href='http://keshavab.github.io/'> Home</a>
+
+    <a href='http://keshavab.github.io/about'>About</a>
+
+    <a href="http://keshavab.github.io/index.xml">Subscribe</a>
+</nav>
+
+
+        <section id="wrapper">
+            <article class="post">
+                <header>
+                    <h1>Hugo theme not rendered correctly</h1>
+                    <h2 class="headline">March 15, 2016</h2>
+                </header>
+                <section id="post-body">
+                    <p>You have built your site with Hugo. <code>hugo server</code> command renders the site fine. But hosting it on
+github pages or your webserver renders it garbled or does not render correctly. If you have hit the above
+behavior, you are not alone.</p>
+
+<p><code>tl; dr</code></p>
+
+<p>The baseurl in config.(yaml|toml) should point to the url on which the site is hosted and not the domain name.
+For e.g. if you are hosting the site on github, setting should be
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">baseurl</span> <span class="o">=</span> <span class="s2">&quot;http://&lt;your-user-name&gt;.github.io/&quot;</span>
+</code></pre></div>
+
+and not yourdomain.com</p>
+
+<p>if you are hosting locally or on your own, it should be
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">baseurl</span> <span class="o">=</span> <span class="s2">&quot;http://&lt;ip-address&gt;:&lt;port&gt;/&quot;</span>
+</code></pre></div>
+</p>
+
+<p>Note the <strong>trailing /</strong> that ends the base url.</p>
+
+<p>The problem is with the base url setting and styling associated with it. Normally most of the themes
+have partials(partial html snippets which make up a page) like following below.
+<script src="//gist.github.com/keshavab/7efd202b851cd6080650.js"></script></p>
+
+<p>Ideally, the themes should have used relative indexes instead of absolutely referring urls, since
+browsers take care of them. However, most of themes out there refer resources from <code>Site.BaseURL</code>.</p>
+
+<p>The reason why this works when run with <code>hugo server</code> command is that, Hugo internally replaces the baseurl
+with the <code>localhost:port</code> to <code>localhost:1313</code>(defaults) and hence they are rendered correctly.</p>
+
+                </section>
+            </article>
+            <footer id="post-meta" class="clearfix">
+                <a href="https://twitter.com/keshavab">
+                        <img class="avatar" src="http://keshavab.github.io/images/avatar.png">
+                        <div>
+                            
+                            <span></span>
+                        </div>
+                    </a>
+                <section id="sharing">
+                    
+<a class="twitter" href="https://twitter.com/intent/tweet?text=Hugo%20theme%20not%20rendered%20correctly - http%3a%2f%2fkeshavab.github.io%2f2016%2f03%2f15%2fhugo_theme_not_rendered by @keshavab"><span class="icon-twitter"> Tweet</span></a>
+
+
+
+
+                </section>
+            </footer>
+
+            <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'keshavabharadwaj';
+    var disqus_identifier = 'http:\/\/keshavab.github.io\/2016\/03\/15\/hugo_theme_not_rendered';
+    var disqus_title = 'Hugo theme not rendered correctly';
+    var disqus_url = 'http:\/\/keshavab.github.io\/2016\/03\/15\/hugo_theme_not_rendered';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+            <ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+    
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/03/31/closure_golang">Closures in golang<aside class="dates">Mar 31</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/03/15/hugo_theme_not_rendered">Hugo theme not rendered correctly<aside class="dates">Mar 15</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2016/02/29/s3-compatible-storage-systems">S3 compatible storage systems<aside class="dates">Feb 29</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2015/09/01/container_ecosystem">Container ecosystem - applications, tools and technologies.<aside class="dates">Sep 1</aside></a>
+        </li>
+        
+   
+    
+        
+        <li>
+            <a href="http://keshavab.github.io/2015/08/21/ansible_include_with_items">Ansible - include &#43; with_items back in 2.0<aside class="dates">Aug 21</aside></a>
+        </li>
+        
+   
+</ul>
+
+            <footer id="footer">
+    
+        
+<div id="social">
+    
+    <a class="symbol" href="http://www.github.com/keshavab">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="http://www.twitter.com/keshavab">
+        circletwitterbird
+    </a>
+    
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2016 Keshava Bharadwaj
+    
+    </p>
+</footer>
+
+        </section>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://keshavab.github.io/js/main.js"></script>
+<script src="http://keshavab.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-66360859-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+
+    </body>
+</html>
